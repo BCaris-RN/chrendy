@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "designTokenGuard": {
+    "ignoreGlobs": [
+      "**/generated/**",
+      "**/*g.dart",
+      "**/*freezed.dart",
+      "**/tokens.css",
+      "**/design_tokens*.dart"
+    ],
+    "colors": [
+      {
+        "id": "background_off_white",
+        "hex": "#F8F9FA",
+        "css": "var(--color-background-off-white)",
+        "dart": "AppColors.backgroundOffWhite"
+      },
+      {
+        "id": "primary_text_rich_dark",
+        "hex": "#0A0A0A",
+        "css": "var(--color-primary-text)",
+        "dart": "AppColors.primaryText"
+      },
+      {
+        "id": "accent_electric_blue",
+        "hex": "#0055FF",
+        "css": "var(--color-accent)",
+        "dart": "AppColors.accent"
+      },
+      {
+        "id": "muted_cool_gray",
+        "hex": "#64748B",
+        "css": "var(--color-muted)",
+        "dart": "AppColors.muted"
+      }
+    ],
+    "fontSizesPx": [
+      {
+        "id": "label_medium",
+        "value": 12,
+        "css": "var(--font-size-label-medium)",
+        "dart": "AppTypography.labelMediumSize"
+      },
+      {
+        "id": "body_medium",
+        "value": 16,
+        "css": "var(--font-size-body-medium)",
+        "dart": "AppTypography.bodyMediumSize"
+      },
+      {
+        "id": "display_medium",
+        "value": 32,
+        "css": "var(--font-size-display-medium)",
+        "dart": "AppTypography.displayMediumSize"
+      },
+      {
+        "id": "display_large",
+        "value": 64,
+        "css": "var(--font-size-display-large)",
+        "dart": "AppTypography.displayLargeSize"
+      }
+    ]
+  }
+}

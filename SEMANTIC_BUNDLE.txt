@@ -1,0 +1,2935 @@
+/* === CODEX SEMANTIC SNAPSHOT ===
+ * TIMESTAMP: 2026-03-03 19:48:40
+ * FILES INCLUDED: 32
+ * STRICT_MODE: ENABLED
+ * SYSTEM_ROLE: Senior Architect
+ * NOTE: Comments and boilerplate have been programmatically stripped for max density.
+ */
+
+--- START SEMANTIC FILE: .\CARIS_SETUP_SUMMARY.md ---
+﻿# Caris Stack Setup Summary
+
+## Completed
+- Copied Caris architecture docs into `docs/architecture/`.
+- Copied enforcement scripts into `scripts/`.
+- Copied guardrails into `templates/guardrails/`.
+- Added CI workflow to `.github/workflows/caris-hard-gates.yml`.
+- Replaced root `analysis_options.yaml` with Caris version.
+- Added root `lefthook.yml`.
+- Updated `pubspec.yaml` with required dependencies:
+  - flutter_riverpod, flutter_hooks, go_router, forui, google_fonts, shared_preferences, http
+  - dev: custom_lint
+- Created required lib architecture folders:
+  - `lib/core`, `lib/features`, `lib/data`, `lib/shared`
+- Added core scaffolding:
+  - `lib/core/app_theme.dart`
+  - `lib/data/draft_store.dart`
+  - `lib/data/retry_policy.dart`
+- Added app shell + MVVM starter feature under `lib/features/home/...`.
+
+## Validation
+- `flutter analyze --no-fatal-infos --no-pub` passed.
+- `flutter test` passed.
+
+## Key Root Files
+- `analysis_options.yaml`
+- `lefthook.yml`
+- `pubspec.yaml`
+
+Generated: 2026-02-28
+
+--- END SEMANTIC FILE: .\CARIS_SETUP_SUMMARY.md ---
+
+--- START SEMANTIC FILE: .\README.md ---
+# android_app_template
+
+A new Flutter project.
+
+## Getting Started
+
+This project is a starting point for a Flutter application.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
+
+--- END SEMANTIC FILE: .\README.md ---
+
+--- START SEMANTIC FILE: .\SESSION_REVISIONS_AND_CHANGES.md ---
+﻿# Session Revisions and Changes
+
+Date: 2026-02-28
+Workspace: `G:\caris_industries\the_caris_stack\flutter\android_app_template`
+
+## 1) Repository Structure and Asset Placement
+Implemented the Caris Stack root layout and copied required files into this template project.
+
+### Added directories
+- `docs/architecture/`
+- `scripts/`
+- `templates/guardrails/`
+- `.github/workflows/`
+- `lib/core/`
+- `lib/features/`
+- `lib/data/`
+- `lib/shared/`
+
+### Copied architecture docs
+- `docs/architecture/001_SYSTEM_RULES_AND_ROADMAPS.md`
+- `docs/architecture/002_FLUTTER_ARCH_DOCS_CONSOLIDATED.md`
+- `docs/architecture/003_DEV_SKILLS_AND_PROTOCOLS.md`
+- `docs/architecture/004_EXTERNAL_LIBS_AND_RESOURCES.md`
+
+### Copied scripts
+- `scripts/generate_semantic_bundle.py`
+- `scripts/enforce_exclusion_zones.sh`
+- `scripts/enforce_exclusion_zones.ps1`
+- `scripts/complexity_gate.py`
+- `scripts/design_token_guard.py`
+
+### Copied guardrail templates
+- `templates/guardrails/design_tokens.lock.json`
+- `templates/guardrails/semantic_risk_keywords.json`
+- `templates/guardrails/analysis_options.caris.yaml`
+
+### Copied CI + hooks
+- `.github/workflows/caris-hard-gates.yml`
+- `lefthook.yml`
+
+### Replaced root guardrail config
+- `analysis_options.yaml` replaced with Caris guardrail version (from `templates/guardrails/analysis_options.caris.yaml`).
+
+## 2) Flutter Configuration Updates
+
+### Updated `pubspec.yaml`
+- Added required dependencies:
+  - `flutter_riverpod`
+  - `flutter_hooks`
+  - `go_router`
+  - `forui`
+  - `google_fonts`
+  - `shared_preferences`
+  - `http`
+- Added required dev dependency:
+  - `custom_lint`
+- Removed default/unneeded template items:
+  - `cupertino_icons`
+  - `flutter_lints`
+
+### Dependency resolution
+- Ran `flutter pub add ...` for required packages.
+- Ran `flutter pub add --dev custom_lint`.
+- `pubspec.lock` updated accordingly.
+
+## 3) App and Architecture Scaffolding (Caris Baseline)
+
+### Replaced app entrypoint
+- `lib/main.dart` changed from Flutter counter template to Riverpod `ProviderScope` bootstrap.
+
+### Added application shell
+- `lib/app.dart` with `MaterialApp.router`, `AppTheme`, and `GoRouter` integration.
+
+### Added core theme/tokens/router
+- `lib/core/design_tokens.dart`
+- `lib/core/app_theme.dart`
+- `lib/core/app_router.dart`
+
+Notes:
+- Theme uses Caris palette and typography scale tokens.
+- 44px minimum touch target enforced in theme/button configs.
+
+### Added data-layer resilience scaffolding
+- `lib/data/draft_store.dart`
+  - `DraftStore` abstraction
+  - `SharedPreferencesDraftStore` implementation
+  - draft size guard
+- `lib/data/retry_policy.dart`
+  - exponential backoff policy
+  - circuit breaker states and open-window behavior
+  - idempotency-aware retry behavior
+- `lib/data/providers.dart`
+  - Riverpod providers for `DraftStore` and `RetryHttpClient`
+
+### Added feature MVVM starter
+- `lib/features/home/presentation/state.dart`
+- `lib/features/home/presentation/viewmodel.dart`
+- `lib/features/home/presentation/view.dart`
+- `lib/features/home/presentation/widgets/action_button.dart`
+
+Behavior scaffolded:
+- Draft-first flow: save draft before network mutation.
+- Restore draft path for restart/failure.
+- Submit flow with retained draft on failure.
+
+### Added shared UI utility
+- `lib/shared/widgets/min_touch_target.dart`
+
+## 4) Tests and Validation
+
+### Updated test
+- `test/widget_test.dart` rewritten from counter test to app shell render test.
+
+### Validation commands run
+- `flutter analyze` initially returned only deprecation infos (`MaterialStatePropertyAll`).
+- Updated theme code to `WidgetStatePropertyAll`.
+- `flutter analyze --no-fatal-infos --no-pub` passed with no issues.
+- `flutter test` passed.
+
+## 5) Documentation and Session Output Files
+
+### Modified architecture doc header
+- `docs/architecture/002_FLUTTER_ARCH_DOCS_CONSOLIDATED.md`
+  - Added active profile marker at top:
+    - Profile ID
+    - Status active for this template repository
+
+### Created root summary file earlier in session
+- `CARIS_SETUP_SUMMARY.md`
+
+## 6) Notable Process Notes
+- A failed patch attempt occurred on `test/widget_test.dart` due content mismatch; resolved by reading file and reapplying a matching patch.
+- A long-running `flutter analyze` session was observed once; a bounded analyze command was used to complete verification.
+- The workspace is not a git repository, so `git status` could not be used.
+
+## Questions Asked in This Session (Bottom Section)
+1. "I have completed the Pre-Code Audit. Please review. Shall I proceed with generating the code?"
+2. "If you want, I can also use a strict format: `Status`, `Changed files`, `Next step` only."
+
+--- END SEMANTIC FILE: .\SESSION_REVISIONS_AND_CHANGES.md ---
+
+--- START SEMANTIC FILE: .\.dart_tool\dartpad\web_plugin_registrant.dart ---
+import 'package:shared_preferences_web/shared_preferences_web.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+void registerPlugins([final Registrar? pluginRegistrar]) {
+  final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
+  SharedPreferencesPlugin.registerWith(registrar);
+  registrar.registerMessageHandler();
+}
+--- END SEMANTIC FILE: .\.dart_tool\dartpad\web_plugin_registrant.dart ---
+
+--- START SEMANTIC FILE: .\.dart_tool\flutter_build\dart_plugin_registrant.dart ---
+import 'dart:io'; 
+import 'package:path_provider_android/path_provider_android.dart' as path_provider_android;
+import 'package:shared_preferences_android/shared_preferences_android.dart' as shared_preferences_android;
+import 'package:path_provider_foundation/path_provider_foundation.dart' as path_provider_foundation;
+import 'package:shared_preferences_foundation/shared_preferences_foundation.dart' as shared_preferences_foundation;
+import 'package:path_provider_linux/path_provider_linux.dart' as path_provider_linux;
+import 'package:shared_preferences_linux/shared_preferences_linux.dart' as shared_preferences_linux;
+import 'package:path_provider_foundation/path_provider_foundation.dart' as path_provider_foundation;
+import 'package:shared_preferences_foundation/shared_preferences_foundation.dart' as shared_preferences_foundation;
+import 'package:path_provider_windows/path_provider_windows.dart' as path_provider_windows;
+import 'package:shared_preferences_windows/shared_preferences_windows.dart' as shared_preferences_windows;
+@pragma('vm:entry-point')
+class _PluginRegistrant {
+  @pragma('vm:entry-point')
+  static void register() {
+    if (Platform.isAndroid) {
+      try {
+        path_provider_android.PathProviderAndroid.registerWith();
+      } catch (err) {
+        print(
+          '`path_provider_android` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+      try {
+        shared_preferences_android.SharedPreferencesAndroid.registerWith();
+      } catch (err) {
+        print(
+          '`shared_preferences_android` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+    } else if (Platform.isIOS) {
+      try {
+        path_provider_foundation.PathProviderFoundation.registerWith();
+      } catch (err) {
+        print(
+          '`path_provider_foundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+      try {
+        shared_preferences_foundation.SharedPreferencesFoundation.registerWith();
+      } catch (err) {
+        print(
+          '`shared_preferences_foundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+    } else if (Platform.isLinux) {
+      try {
+        path_provider_linux.PathProviderLinux.registerWith();
+      } catch (err) {
+        print(
+          '`path_provider_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+      try {
+        shared_preferences_linux.SharedPreferencesLinux.registerWith();
+      } catch (err) {
+        print(
+          '`shared_preferences_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+    } else if (Platform.isMacOS) {
+      try {
+        path_provider_foundation.PathProviderFoundation.registerWith();
+      } catch (err) {
+        print(
+          '`path_provider_foundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+      try {
+        shared_preferences_foundation.SharedPreferencesFoundation.registerWith();
+      } catch (err) {
+        print(
+          '`shared_preferences_foundation` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+    } else if (Platform.isWindows) {
+      try {
+        path_provider_windows.PathProviderWindows.registerWith();
+      } catch (err) {
+        print(
+          '`path_provider_windows` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+      try {
+        shared_preferences_windows.SharedPreferencesWindows.registerWith();
+      } catch (err) {
+        print(
+          '`shared_preferences_windows` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+    }
+  }
+}
+--- END SEMANTIC FILE: .\.dart_tool\flutter_build\dart_plugin_registrant.dart ---
+
+--- START SEMANTIC FILE: .\docs\architecture\001_SYSTEM_RULES_AND_ROADMAPS.md ---
+================================================================================
+
+PART 1: SYSTEM CONSTITUTION & OPERATIONAL RULES
+
+================================================================================
+
+  
+
+1. SYSTEM OVERRIDE: STRICT_MODE_ENABLED
+
+   - You are acting as the Senior Architect for this project.
+
+   - You must ONLY use code provided in uploaded source files.
+
+   - For feature work, apply tiered Pre-Flight Audit routing first (self-certify for low-risk/low-complexity, full audit for high-risk/high-complexity). After required approval (if any), output implementation code and verification evidence.
+
+   - Keep explanations concise and decision-focused. Avoid filler.
+
+   - External dependencies are permitted only when listed in `004_EXTERNAL_LIBS_AND_RESOURCES.md` or approved via explicit, documented sign-off. Unvetted packages are banned.
+
+  
+
+2. AUTHORITY HIERARCHY
+
+   - Rank 1 (Highest): Files starting with "SPECS_"
+
+   - Rank 2: Files in "src/core"
+
+   - Rank 3: General uploaded documentation
+
+   - Rank 4 (Lowest): Internal LLM training data
+
+  
+
+3. EXCLUSION ZONES & DEPRECATION
+
+   - IGNORE patterns found in: [legacy_api_folder], [deprecated_utils.js]
+
+   - IGNORE standard library implementation IF a custom internal wrapper exists in [src/core].
+
+   - NEGATIVE CONSTRAINT: Do NOT use legacy/deprecated modules. If requested, output: "Access Denied: That module is deprecated."
+
+   - ERROR HANDLING: If a solution requires a deprecated source, output: "VIOLATION: DEPENDENCY ON DEPRECATED [SOURCE_NAME]."
+
+   - SPIKE PROTOCOL SANDBOX: `experimental/` and `.proto.*` files are permitted for local ideation only. They are excluded from local exclusion scans but must not reach committed production code.
+
+   - STABILIZATION GATE: Pre-commit hooks MUST block staged `.proto.*` files and `experimental/` artifacts until refactored into production paths with tests.
+
+  
+
+4. OUTPUT FORMATTING
+
+   - No polite conversation or filler text.
+
+   - For new feature/refactor requests: determine the audit route first. Low-risk changes may self-certify; high-risk/high-complexity changes require the completed Pre-Flight Audit before code.
+
+   - After the required audit step (self-certification, standard audit, or approved Stop-and-Think), output code plus a concise verification summary (tests/lint/build status).
+
+   - Code comments must explain non-obvious logic, not trivial assignments.
+
+   - Variable names: [TARGET_BUNDLE] refers to the active codebase bundle (e.g., SOURCE_X_BUNDLE.txt).
+
+  
+
+================================================================================
+
+PART 2: SDLC ROADMAP (Software Development Life Cycle)
+
+================================================================================
+
+  
+
+PHASE 1: REQUIREMENTS & ANALYSIS
+
+[Goal: Turn vague ideas into concrete features.]
+
+  
+
+> Prompt: [FEASIBILITY_AUDIT]
+
+"Review the PRODUCT_BRIEF. Cross-reference with our existing [TARGET_BUNDLE]. Identify any proposed features that conflict with our current architecture or would require a major refactor."
+
+  
+
+> Prompt: [SPEC_TO_STORY_CONVERTER]
+
+"Analyze FEATURE_REQUEST_A. Break this down into granular User Stories (Jira style). Include Acceptance Criteria for each story."
+
+  
+
+> Prompt: [RISK_ASSESSMENT]
+
+"Identify potential technical bottlenecks or security risks in the proposed feature set. Rate them High/Medium/Low."
+
+  
+
+PHASE 2: SYSTEM DESIGN
+
+[Goal: Blueprint the solution before writing code.]
+
+  
+
+> Prompt: [SCHEMA_ARCHITECT]
+
+"We need to support [Feature X]. Propose the necessary changes to our Database Schema. Output raw SQL or Prisma syntax. Ensure strict normalization."
+
+  
+
+> Prompt: [API_CONTRACT_DESIGNER]
+
+"Draft the REST/GraphQL API response structure for the new endpoints. Ensure it adheres to the 'Response Format' defined in RULES.txt."
+
+  
+
+> Prompt: [COMPONENT_TREE_BUILDER]
+
+"Based on the UI requirements, outline the hierarchy of React components we will need. Mark which ones can be reused from [TARGET_BUNDLE]."
+
+  
+
+PHASE 3: IMPLEMENTATION
+
+[Goal: Write the actual software.]
+
+  
+
+> Prompt: [BOILERPLATE_GENERATOR]
+
+"Generate the scaffold for the new Service class. Include all imports, type definitions, and the standard error handling block defined in the bundle."
+
+  
+
+> Prompt: [LOGIC_TRANSLATOR]
+
+"Translate this pseudocode logic into valid [Language] code. Use our internal utility libraries found in the bundle."
+
+  
+
+> Prompt: [CONSTANTS_EXTRACTOR]
+
+"I am hardcoding strings in this function. Refactor this to use our centralized Config or Constants pattern found in [TARGET_BUNDLE]."
+
+  
+
+PHASE 4: TESTING & QA
+
+[Goal: Ensure it doesn't break.]
+
+  
+
+> Prompt: [UNIT_TEST_WRITER]
+
+"Analyze the PaymentProcessor class in the bundle. Write a suite of unit tests covering: 1. Happy Path, 2. Null Inputs, 3. Network Timeouts. Use our [Test_Framework] syntax."
+
+  
+
+> Prompt: [EDGE_CASE_HUNTER]
+
+"Look at the 'Validation Logic' in the bundle. Can you find a combination of inputs that would bypass these checks?"
+
+  
+
+> Prompt: [MOCK_DATA_GENERATOR]
+
+"Generate a JSON file with 50 entries of mock data that matches the UserProfile schema, including 5 entries with malformed data for testing."
+
+  
+
+PHASE 5: DEPLOYMENT & DEVOPS
+
+[Goal: Get it to the server.]
+
+  
+
+> Prompt: [CONFIG_VALIDATOR]
+
+"Review the docker-compose.yml. Suggest specific optimizations for a production environment vs. the dev environment shown in the file."
+
+  
+
+> Prompt: [RELEASE_NOTE_DRAFTER]
+
+"Compare the old bundle with the new one, and summarize the changes into a Release Note for stakeholders."
+
+  
+
+> Prompt: [ENV_VAR_CHECK]
+
+"Scan the new code for any references to process.env. List all new Environment Variables that need to be added to the production server."
+
+  
+
+PHASE 6: MAINTENANCE & SUPPORT
+
+[Goal: Fix bugs and keep it running.]
+
+  
+
+> Prompt: [STACK_TRACE_DETECTIVE]
+
+"Here is a stack trace from production [PASTE_ERROR]. Cross-reference this with [TARGET_BUNDLE] to identify the exact line number and logic flow that caused this crash."
+
+  
+
+> Prompt: [REFACTOR_STRATEGIST]
+
+"The UserAuth module is becoming too large. Suggest a strategy to split this into three smaller, decoupled micro-services."
+
+  
+
+> Prompt: [LEGACY_MIGRATOR]
+
+"We are deprecating Library A in favor of Library B. Identify all files in the bundle that import Library A and show the code diff required to update them."
+
+  
+
+================================================================================
+
+PART 3: PRODUCTION HARDENING PROTOCOL
+
+================================================================================
+
+  
+
+PHASE 1: SEMANTIC CODE REVIEW (AUDIT)
+
+[Goal: Identify architectural rot and complexity.]
+
+  
+PHASE 2: AUTOMATED RULE ENFORCEMENT (HARD GATES)
+[Goal: Physically prevent architectural violations from merging.]
+
+1. EXCLUSION ZONE ENFORCEMENT
+   - Rule: Legacy and deprecated modules MUST NOT be imported.
+   - Mechanism: The CI/CD pipeline runs `scripts/enforce_exclusion_zones.sh` before every build.
+   - Fallback: The IDE is configured via `analysis_options.yaml` and `custom_lint` to throw fatal errors on banned imports locally.
+   - Spike Sandbox Exception: `experimental/` and `.proto.*` files are locally whitelisted for ideation only.
+   - Stabilization Gate: `lefthook.yml` must reject commits containing spike sandbox artifacts.
+
+2. SEMANTIC CONTEXT GENERATION & AI INTEGRATION
+   - Rule: Do not feed raw, bloated source code to LLMs.
+   - Mechanism 1 (Legacy CLI): Developers use `scripts/generate_semantic_bundle.py` to strip comments and prevent token bloat.
+   - Mechanism 2 (Modern AI-Native): Developers are officially authorized to use Cursor IDE, Windsurf, Aider, or Cline. These tools automatically handle dynamic Abstract Syntax Tree (AST) context indexing.
+   - Strict Constraint: Even if using Cursor or Aider, the AI must still execute the audit-routing check first. Low-risk/low-complexity changes may self-certify; high-risk or high-complexity changes require the full "Pre-Flight Audit" (Stop-and-Think protocol) before writing code.
+
+3. AUTOMATED CODE REVIEW ROUTING
+   - Rule: Code reviews are routed based on Cyclomatic Complexity.
+   - Mechanism (CI/CD): `.github/workflows/caris-hard-gates.yml` runs exclusion checks, CodeQL security analysis, and a complexity gate.
+   - Mechanism (Routing Engine): `scripts/complexity_gate.py` outputs both complexity route and audit route.
+     * Score < 5: Fast Model (Syntax/Formatting)
+     * Score 5-20: Standard Model (Logic Verification)
+     * Score > 20: Senior Architect Reasoning Model (Architecture/Security Audit)
+   - High-Risk Override (Manual Stop-and-Think required regardless of score):
+     * Exclusion-zone enforcement / guardrail configs
+     * System constitution / governance documents
+     * SQL / Prisma schema definitions and migrations
+   - Low-Risk Self-Certification:
+     * If Score < 5 and no high-risk paths are touched, the AI is authorized to self-certify and proceed without a human halt.
+
+--- END SEMANTIC FILE: .\docs\architecture\001_SYSTEM_RULES_AND_ROADMAPS.md ---
+
+--- START SEMANTIC FILE: .\docs\architecture\002_FLUTTER_ARCH_DOCS_CONSOLIDATED.md ---
+
+ACTIVE PROFILE SELECTION
+- Profile ID: 002_FLUTTER_ARCH_DOCS_CONSOLIDATED.md
+- Status: Active for this template repository
+
+================================================================================
+PART 1: THE DESIGN SYSTEM ("THE UNFORGETTABLE AESTHETIC")
+================================================================================
+
+1. CORE PHILOSOPHY
+   - We reject generic Material Design/Cupertino defaults.
+   - We implement a "Bold" aesthetic strategy characterized by high contrast and "Exponential Typography."
+   - The UI must be "Swiss/International" or "Refined/Luxury" in style.
+
+2. TYPOGRAPHY: EXPONENTIAL SCALING
+   [Constraint: Do NOT use linear font scaling.]
+   - Headers: Massive scale (64px+), tight leading (0.9), distinct Display Font (e.g., DM Serif).
+   - Body: Legible scale (16px), loose leading (1.5+), clean Sans-Serif (e.g., IBM Plex Sans).
+   - Variable Hierarchy:
+     * Display Large: 64px | Height 0.9 | Tracking -1.5 (The "Hook")
+     * Display Medium: 32px | Height 1.0 | Tracking -0.5
+     * Body Medium:   16px | Height 1.6 | Color: Primary @ 80% opacity
+     * Label Medium:  12px | Weight 600 | Tracking 0.5 (Functional UI)
+
+3. COLOR PALETTE
+   [Constraint: No gradients. No pure Black (#000) or Pure White (#FFF).]
+   - Background: Off-White (#F8F9FA) or Rich Dark.
+   - Primary Text: Rich Dark (#0A0A0A).
+   - Accent: One sharp, electric color (#0055FF).
+   - Muted: Cool Grays (#64748B) for hierarchy.
+
+4. WHITESPACE & LAYOUT
+   - Scale: 4px, 8px, 16px, 32px, 64px.
+   - Rule: "Double the padding." Let minimal components breathe.
+   - Touch Targets: Minimum 44px strictly enforced via padding.
+
+================================================================================
+PART 2: APP ARCHITECTURE (MVVM)
+================================================================================
+
+1. DEPENDENCY STACK
+   - Framework: Flutter
+   - UI Library: Forui (Minimalist)
+   - State Management: Riverpod (App-wide), flutter_hooks (Local)
+   - Navigation: GoRouter (Deep linking support)
+   - Typography: google_fonts
+   - Horror Path Draft Persistence (Mandatory): `shared_preferences` behind a `DraftStore` interface (default profile for recoverable form drafts)
+
+2. SEPARATION OF CONCERNS
+   - VIEW (UI):
+     * Strictly handle rendering and user interaction.
+     * Contains NO business logic.
+     * Logic-free "Presentational Components" receive data via props.
+     * Connected "Container Components" watch providers.
+   - VIEWMODEL (Logic):
+     * Extends StateNotifier or Notifier.
+     * Handles state mutations, validation, and API calls.
+     * Exposes immutable state objects to the View.
+
+3. DIRECTORY STRUCTURE
+   /lib
+     /core          # Theme, Config, Constants
+     /features
+       /auth
+         /presentation
+           /widgets # Presentational Components
+           view.dart
+           viewmodel.dart
+         /data
+           repository.dart
+     /shared        # Reusable UI components
+
+================================================================================
+PART 3: IMPLEMENTATION REFERENCE (CODE STANDARDS)
+================================================================================
+
+/// THEME CONFIGURATION
+/// Implements the "Bold" aesthetic with exponential scaling.
+class AppTheme {
+  static const Color _background = Color(0xFFF8F9FA);
+  static const Color _primary = Color(0xFF0A0A0A);
+  static const Color _accent = Color(0xFF0055FF);
+  
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
+      scaffoldBackgroundColor: _background,
+      colorScheme: const ColorScheme.light(
+        primary: _primary,
+        secondary: _accent,
+        surface: _background,
+        onSurface: _primary,
+      ),
+      textTheme: TextTheme(
+        displayLarge: GoogleFonts.dmSerifDisplay(
+          fontSize: 64, height: 0.9, letterSpacing: -1.5, color: _primary
+        ),
+        bodyMedium: GoogleFonts.ibmPlexSans(
+          fontSize: 16, height: 1.5, color: _primary.withOpacity(0.8)
+        ),
+      ),
+    );
+  }
+}
+
+/// VIEWMODEL EXAMPLE
+/// Strict separation of logic from UI using Riverpod.
+class LoginState {
+  final String email;
+  final bool isLoading;
+  final String? error;
+  // ... copyWith & constructor
+}
+
+class LoginViewModel extends StateNotifier<LoginState> {
+  LoginViewModel() : super(LoginState());
+  
+  Future<void> login() async {
+    state = state.copyWith(isLoading: true);
+    // Execute logic...
+  }
+}
+
+================================================================================
+PART 4: DATA LAYER & PERFORMANCE PROTOCOLS
+================================================================================
+
+1. PAGINATION STRATEGY (The "Keyset Pivot")
+   - VIOLATION: Using `OFFSET 1000 LIMIT 20`. This causes O(N) linear scans.
+   - REQUIREMENT: Use Keyset/Cursor Pagination.
+   - PATTERN: `WHERE id > last_seen_id ORDER BY id LIMIT 20`.
+   - PERFORMANCE: Ensures O(log N) access via B-Tree Index regardless of depth.
+
+2. LIST RENDERING
+   - VIOLATION: Standard Column or ListView for large datasets.
+   - REQUIREMENT: Use `ListView.builder` or `SuperList`.
+   - CONSTRAINT: Implement "Lazy Loading" to prevent memory bottlenecks.
+
+3. SQL OPTIMIZATION (Backend Support)
+   - DIAGNOSTIC: Run `EXPLAIN (ANALYZE, BUFFERS)` on all slow queries.
+   - ANTI-PATTERN: `Seq Scan` (Sequential Scan) on large tables.
+   - INDEXING RULES:
+     * B-Tree: For standard comparisons (=, >, <).
+     * GIN: MANDATORY for JSONB, Arrays, and Full-Text Search.
+     * Trigram (pg_trgm): MANDATORY for wildcard searches (`LIKE '%term'`).
+
+================================================================================
+PART 5: PRODUCTION HARDENING & QA
+================================================================================
+
+1. THE "IRON LAW" OF TDD
+   - Rule: "NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST."
+   - Cycle:
+     1. RED: Write a test that fails (confirms the need).
+     2. GREEN: Write simple code to pass the test.
+     3. REFACTOR: Clean up without changing behavior.
+
+2. THE "HORROR PATH" PROTOCOL
+   - Do not just test success. You must explicitly test and handle:
+     1. Mid-Transaction Failure (DB connection drops).
+     2. Upstream Collapse (API returns 500).
+     3. Resource Exhaustion (Disk full / Memory limits).
+   - Active Recovery Requirement:
+     * Wrap remote calls with retry/backoff where safe (do not retry non-idempotent writes blindly).
+     * Surface recoverable failures as user-facing retry states, not silent failures.
+   - State Restoration Requirement (Prescriptive):
+     * ViewModels must persist recoverable draft input via a `DraftStore` abstraction backed by `shared_preferences` BEFORE network mutation.
+     * Required command flow: `saveDraft(draft)` -> attempt mutation -> `clearDraft(key)` on success -> `restoreDraft(key)` on failure/app restart.
+     * Forbidden in draft store: passwords, auth tokens, payment card data, and secrets.
+     * If draft payloads exceed `shared_preferences` suitability (large blobs/attachments), escalate for explicit architecture sign-off; do not introduce ad-hoc storage libraries.
+   - Requirement: User-friendly error states, no raw stack traces exposed in UI.
+
+3. ACCESSIBILITY CHECKLIST
+   - Touch Targets: Are all interactive elements at least 44x44px?
+   - Input Errors: Do not rely on color alone. Use explicit text descriptions.
+   - Contrast: Verify "Off-white" background maintains ratio with "Rich Dark" text.
+
+4. FINAL REVIEW GATES
+   - [ ] Does typography follow the 64px/16px exponential scale?
+   - [ ] Is business logic fully decoupled from FScaffold/FCard?
+   - [ ] Are we using Keyset pagination instead of Offset?
+   - [ ] Have we verified the "Horror Path" for network/data failures?
+   - [ ] Does the ViewModel use the mandated `DraftStore` (`shared_preferences`) flow for recoverable input before mutation?
+
+5. IDE ARCHITECTURE GUARDRAILS
+   - REQUIREMENT: All developers must run `flutter pub add dev:custom_lint`.
+   - ENFORCEMENT: The `analysis_options.yaml` is configured to throw IDE-level errors if a developer attempts to import from an Exclusion Zone (e.g., `legacy_api_folder`).
+   - ENFORCEMENT: `custom_lint` must also throw fatal errors for raw color literals and off-scale `fontSize` values outside the locked token scale (for example 12/16/32/64 in the active profile).
+   - RULE: Never use `// ignore: ban_legacy_imports` to bypass this constraint.
+```
+
+--- END SEMANTIC FILE: .\docs\architecture\002_FLUTTER_ARCH_DOCS_CONSOLIDATED.md ---
+
+--- START SEMANTIC FILE: .\docs\architecture\003_DEV_SKILLS_AND_PROTOCOLS.md ---
+================================================================================
+PART 1: ENGINEERING CORE PROTOCOLS
+================================================================================
+[INSTRUCTION: The following protocols are non-negotiable. Any deviation requires explicit, documented sign-off.]
+
+## 1. TEST-DRIVEN DEVELOPMENT (THE IRON LAW)
+* **The Iron Law:** NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.
+* **The Cycle (Strictly Enforced):**
+  1. **RED:** Write a test that fails for the expected reason (e.g., Assertion Error, not Compilation Error).
+  2. **GREEN:** Write the simplest code to pass. Hardcoding is acceptable here.
+  3. **REFACTOR:** Clean up (DRY, naming) only while Green.
+* **Violations (Anti-Patterns):**
+  * *The Batcher:* Writing >1 test at a time is banned.
+  * *The Mock-Everything:* Mocking internal details instead of boundaries is prohibited.
+* **Spike Protocol (Prototyping Sandbox):**
+  * **Allowed Sandbox Zones:** `experimental/` directories and files ending in `.proto.<ext>` (examples: `.proto.dart`, `.proto.tsx`).
+  * **Temporary Exception:** Inside sandbox zones only, the Iron Law and full Pre-Flight Audit may be suspended while interface/logic is still unsettled.
+  * **Containment Rule:** Production code in `src/` (or equivalent) must not depend on sandbox artifacts.
+  * **Stabilization Gate:** Before commit/merge, spike code must be refactored into production paths with accompanying tests. `lefthook.yml` enforces a commit-blocking proto-file check.
+  * **Ephemerality Rule (Mandatory):** Spike artifacts may not persist across more than one feature branch lifecycle. They are disposable prototypes, not long-lived local dependencies.
+  * **Staleness TTL (Tooling):** `scripts/enforce_exclusion_zones.ps1` and `scripts/enforce_exclusion_zones.sh` must warn on spike artifacts older than 48 hours (configurable via `CARIS_SPIKE_STALE_HOURS`). CI may escalate this to a hard failure with `CARIS_FAIL_ON_STALE_SPIKES=1`.
+  * **Stale Spike Recycling Workflow (Mandatory when flagged):**
+    1. Analyze the stale spike artifact and list reusable domain logic vs throwaway scaffolding.
+    2. Generate a TDD migration plan targeting the production path (`lib/`, `src/`, etc.).
+    3. Re-implement the reusable logic in production code with failing tests first.
+    4. Verify behavior parity and add error handling/logging/telemetry.
+    5. Delete the stale spike artifact after production migration succeeds.
+  * **Stale Spike Refactor Prompt Template (Recommended):** "Analyze `[SPIKE_FILE]`, extract the core logic worth preserving, and propose a TDD migration plan to `[PRODUCTION_PATH]` with tests, error handling, and cleanup steps. Do not copy spike code directly into production."
+
+## 2. SYSTEMATIC DEBUGGING
+* **Core Principle:** Fixes without root cause investigation are considered failures.
+* **Phase 1 (Investigation):** Read stack traces fully. Reproduce consistently. Trace data flow.
+* **Phase 2 (Pattern Analysis):** Compare against working examples. Check environment/dependencies.
+* **Phase 3 (Hypothesis):** Form a single hypothesis ("I think X because Y"). Test minimally.
+* **Phase 4 (Implementation):** Write a failing test case. Apply atomic fix. Verify no regressions.
+
+## 3. CODE REVIEW & ROUTING PROTOCOLS
+* **Reception Strategy:** Verify before implementing. Do not "performative agree". Push back on suggestions that violate YAGNI or introduce complexity.
+* **Implementation Order:** 1. Blocking Issues (Security/Bugs) → 2. Simple Fixes → 3. Complex Refactors.
+* **Automated Routing Logic:**
+  * *Low Complexity (Score < 5):* Route to Fast Model for typos and formatting.
+  * *Medium Complexity (Score 5-20):* Route to Standard Model for single component logic.
+  * *High Complexity (Score > 20):* Route to Reasoning Model for Architecture, Security, and Migrations.
+* **Tiered Audit Routing (Pre-Flight Audit):**
+  * *Self-Certify Path:* If complexity score is `< 5` and no high-risk files are touched, the AI may execute immediately after recording a short self-certification.
+  * *High-Risk Override:* Full "Stop-and-Think" audit + human review is mandatory when touching exclusion-zone enforcement, system constitution/governance docs, or SQL/Prisma schemas/migrations.
+  * *Semantic Risk Override:* Low cyclomatic complexity does NOT imply safety. `scripts/complexity_gate.py` must also inspect changed file content for semantic triggers (e.g., payment/auth/password/encryption/billing/refund keywords) and force Stop-and-Think when detected.
+  * *Mechanism:* `scripts/complexity_gate.py` is the routing authority and must output both complexity route and audit route.
+
+## 4. GIT ADVANCED WORKFLOWS
+* **Interactive Rebase:** Use `git rebase -i HEAD~N` to squash, reword, or drop commits before merging.
+* **Bisect:** Use `git bisect start` → `bad` → `good` to execute a binary search for bug-introducing commits.
+* **Worktrees:** Use `git worktree add ../new-feature` to allow parallel branch work without context switching.
+* **Reflog Recovery:** Use `git reflog` → `git reset --hard HEAD@{n}` to recover lost commits or branches.
+
+================================================================================
+PART 2: TECHNICAL DOMAIN GUARDS
+================================================================================
+
+## 1. MODERN PYTHON & TESTING
+* **Package Management (UV):** Use `uv init <project>`, `uv add <package>`, and `uv run script.py`. This replaces pip/poetry and mandates ephemeral environments.
+* **Testing (Pytest):** * Structure tests using Arrange-Act-Assert (AAA). 
+  * Use `yield` for teardown in fixtures and `scope="session"` for databases. 
+  * Use `@pytest.mark.parametrize` to avoid loops in tests. 
+  * Patch external dependencies using `unittest.mock`, never the Unit Under Test (UUT).
+
+## 2. FRONTEND DESIGN AESTHETICS (THE "ANTI-SLOP" MANDATE)
+* **The Core Directive:** Build distinctive, production-grade interfaces that avoid generic "AI slop" layouts and boilerplate styling.
+* **Token-First Rule (Mandatory):** Anti-slop decisions must be selected from the locked design token schema in `002c_UNIVERSAL_ARCH_BLUEPRINT.md` (font pair enum, typography ratio, spacing, texture IDs). Do not rely on subjective adjectives alone.
+* **Token Enforcement Rule (Mandatory):** The token schema is not advisory. `scripts/design_token_guard.py` (plus framework lint rules, e.g., Flutter `custom_lint`) must hard-fail raw color literals and off-scale typography values. Optional autofix may rewrite raw CSS hex literals to token references.
+* **Typography:** Generic fonts like Arial, Roboto, and Inter remain banned unless explicitly whitelisted in the active token schema/profile for body text. Use a whitelisted display/body pair only.
+* **Color & Atmosphere:** Use CSS variables/theme tokens. Cliched purple-on-white defaults are banned. Atmospheric depth must use whitelisted texture assets from `004_EXTERNAL_LIBS_AND_RESOURCES.md` when available.
+* **Spatial Composition & Layout:** Layouts may be bold, but the selected token/profile constraints (spacing grid, touch targets, typography scale) are non-negotiable.
+* **Motion & Interactions:** Favor a few high-impact moments over scattered micro-interactions. Use stack-approved libraries (or CSS) per framework profile.
+* **Execution Constraint:** Implementation complexity must match the selected token profile and aesthetic target without breaking usability or accessibility.
+
+## 3. SQL OPTIMIZATION
+* **Diagnostics:** Always run `EXPLAIN (ANALYZE, BUFFERS)` to hunt for `Seq Scan` on large tables.
+* **Indexing Mandates:** Use B-Tree for standard comparisons, GIN for JSONB/Arrays/Full-Text Search, and BRIN for massive time-ordered logs.
+* **Anti-Patterns:** Fix N+1 Queries with JOINs or `WHERE id IN (...)`. Fix Offset Pagination with Keyset Pagination (`WHERE id > last_seen LIMIT 20`). Fix Wildcard Leading (`LIKE '%term'`) with Trigram Index (`pg_trgm`).
+
+================================================================================
+PART 3: AGENT SKILLS ARCHITECTURE
+================================================================================
+
+## 1. SKILL STRUCTURE & DISCOVERY
+* **Definition:** A skill is a directory containing a `SKILL.md` file.
+* **Constraints:** `SKILL.md` must be < 500 lines; heavy documentation goes into `references/`. Agents scan directories, parse frontmatter, and inject metadata into the system prompt.
+* **Spec:** Frontmatter must be YAML containing name (max 64 chars), description (max 1024 chars), and compatibility.
+
+## 2. STANDARD SKILLS
+* **Plan Creation (`create-plan`):** Operates in Read-only mode, asks max 1-2 questions, and outputs a specific Markdown template with Scope, Action Items, and Open Questions.
+* **Linear Integration (`linear`):** Workflow strictly follows: Clarify Goal → Select Tool → Execute (Read then Write) → Summarize.
+
+================================================================================
+PART 4: THE PRE-CODE AUDIT (CONSTRAINT-FIRST ARCHITECTURE, TIERED)
+================================================================================
+[INSTRUCTION TO AI: Do not assume every task requires a full human-halt audit. First determine the audit route using complexity and risk. Low-complexity, low-risk changes may self-certify. High-risk or high-complexity changes require the full "Stop-and-Think" audit before code.]
+
+TIERED AUDIT ROUTING (MANDATORY)
+1. Compute/obtain the complexity route (see `scripts/complexity_gate.py`).
+2. Detect high-risk file classes:
+   - Exclusion-zone enforcement or guardrail configs (`scripts/enforce_exclusion_zones.*`, `lefthook.yml`, CI gate configs).
+   - System constitution / governance docs (`001` through `005` architecture and protocol documents).
+   - Database schemas and migrations (`*.sql`, `*.prisma`, `migrations/`).
+   - Semantic risk triggers in changed file contents (`payment`, `auth`, `password`, `encryption`, `billing`, `refund`, etc.) even when complexity is low.
+3. Routing Outcome:
+   - **Self-Certify (Fast Path):** Complexity `< 5` and no high-risk paths. AI records a short audit line, then proceeds without waiting.
+   - **Standard Audit:** Complexity `5-20` and no high-risk paths. AI outputs a concise Pre-Flight Audit, then may proceed unless local rules require approval.
+   - **Stop-and-Think Audit (Mandatory Human Review):** Any high-risk path OR complexity `> 20`.
+
+THE PRE-FLIGHT AUDIT TEMPLATE (FULL FORM)
+Use this form for Standard or Stop-and-Think routes. For Self-Certify, output only the short routing line and proceed.
+
+0. Audit Routing Decision
+Complexity Route: [Fast / Standard / Reasoning] (Score: [N])
+High-Risk Paths Touched: [None | list exact files]
+Audit Route: [Self-Certify / Standard Audit / Stop-and-Think]
+
+1. Architectural Alignment
+Execution Boundary: [Is this running on the Server, the Client, or Both? Why?]
+
+State Management: [Where does the state live? Local hook, global store, URL params, or persisted draft store?]
+
+2. The "Horror Path" Defense (Active Recovery + Restoration)
+Network Collapse: [How will this code behave if the database or 3rd-party API takes 10 seconds to respond or returns a 503?]
+
+Recovery Pattern: [Circuit Breaker / Exponential Backoff / Both. Name the wrapper or library.]
+
+State Restoration: [What user input is persisted locally before the mutation? How is the pre-submit state restored after failure?]
+
+Poisoned Payload: [How are we validating the data entering this function? What happens if a user submits a 50MB malformed JSON blob?]
+
+Concurrency / Race Conditions: [What happens if two users trigger this exact mutation at the exact same millisecond?]
+
+3. Explicitly Banned Patterns
+Anti-Pattern Acknowledgment: [State 1-2 lazy ways an AI would normally write this (e.g., "Using an N+1 query loop" or "Exposing the raw stack trace in the catch block").]
+
+The Caris Stack Solution: [State exactly how you will avoid the anti-pattern using the rules defined in documents 001 through 004.]
+
+[AI STOP POINT - ONLY FOR STOP-AND-THINK]: "I have completed the Pre-Code Audit. Please review. Shall I proceed with generating the code?"
+
+--- END SEMANTIC FILE: .\docs\architecture\003_DEV_SKILLS_AND_PROTOCOLS.md ---
+
+--- START SEMANTIC FILE: .\docs\architecture\004_EXTERNAL_LIBS_AND_RESOURCES.md ---
+
+\================================================================================
+
+WHITELIST AUTHORITY
+
+\================================================================================
+
+Rule: Dependencies in this document are pre-vetted and approved for use.
+Constraint: Any package NOT listed here requires explicit, documented sign-off before installation.
+
+\================================================================================
+
+PART 0: CROSS-STACK MANDATORY WHITELISTS (RESILIENCE + DESIGN TOKENS)
+
+\================================================================================
+
+### RESILIENCE PATTERN LIBRARIES (MANDATORY FOR REMOTE CALLS)
+
+* **Rule:** Any call to an external dependency (HTTP API, DB proxy, queue, or third-party SDK) must be wrapped in a standardized resilience policy using Circuit Breakers and/or Exponential Backoff.
+* **Java / Kotlin:** **Resilience4j** [resilience4j.readme.io](https://resilience4j.readme.io/) - Mandated for circuit breakers, retries, bulkheads, and rate limiting.
+* **.NET / C#:** **Polly** [github.com/App-vNext/Polly](https://github.com/App-vNext/Polly) - Mandated resilience strategy library for retries, circuit breakers, and fallback policies.
+* **JavaScript / TypeScript:** **p-retry** [github.com/sindresorhus/p-retry](https://github.com/sindresorhus/p-retry) - Approved retry library for backoff wrappers around `fetch`/HTTP clients.
+* **Dart / Flutter:** **Http (`package:http`) + repository-owned retry wrapper** - Approved baseline. The stack mandates a local wrapper (e.g., `retry_policy.dart`) implementing backoff/circuit-breaker behavior around remote calls.
+* **Implementation Constraint:** "Graceful failure" alone is insufficient. The generated code must demonstrate active recovery (retry/circuit breaker) and safe stop conditions.
+* **State Restoration Rule:** View models / client state layers must persist user input locally before mutation requests so failed submissions recover to the pre-submit state.
+* **Approved Draft Persistence (Flutter Profile):** **shared_preferences** via a `DraftStore` adapter for recoverable non-secret form drafts. Do not invent ad-hoc temp files or random local caches.
+* **Approved Draft Persistence (Next.js/React Profile):** **IndexedDB via `idb`** for recoverable client-side drafts. `localStorage` is restricted to trivial preferences (theme, dismissed UI flags).
+* **Security Constraint (All Profiles):** Passwords, auth tokens, payment card data, and secrets are forbidden in client/local draft stores unless a separately approved secure-storage profile is documented.
+
+### DESIGN TEXTURE ASSET LIBRARY (ANTI-SLOP WHITELIST)
+
+* **Rule:** Atmospheric depth must use whitelisted texture assets instead of ad-hoc generated CSS noise when an approved asset exists.
+* **Required Project Path:** `assets/textures/` (or framework equivalent static asset directory).
+* **Whitelisted Texture IDs / Filenames (baseline pack):**
+  * `grain_soft_01.png`
+  * `grain_heavy_01.png`
+  * `noise_film_01.png`
+  * `paper_fiber_01.png`
+  * `mesh_shadow_01.png`
+* **Usage Constraint:** AI-generated UI code must reference these IDs/filenames via design tokens/config and may not invent new texture names without documented approval.
+
+\================================================================================
+
+PART 1: FLUTTER ECOSYSTEM RESOURCES
+
+\================================================================================
+
+  
+
+### OFFICIAL & EDUCATIONAL
+
+* **Flutter Website:** [flutter.dev](https://flutter.dev/) - Google’s UI toolkit for building natively compiled applications.
+* **Official Gallery:** [github.com/flutter/gallery](https://github.com/flutter/gallery) - Demo for Material Design widgets.
+* **Roadmap.sh:** [roadmap.sh/flutter](https://roadmap.sh/flutter) - Community-curated learning roadmap.
+* **Flutter Youtube:** [youtube.com/flutterdev](https://www.youtube.com/flutterdev) - Official channel including "The Boring Show".
+
+  
+
+### UI FRAMEWORKS & COMPONENT LIBRARIES
+
+* **Forui:** [github.com/forus-labs/forui](https://github.com/forus-labs/forui) - Minimalistic UI library inspired by shadcn/ui.
+* **Shadcn Flutter:** [github.com/nank1ro/flutter-shadcn-ui](https://github.com/nank1ro/flutter-shadcn-ui) - Port of shadcn/ui.
+* **GetWidget:** [github.com/getwidget/getwidget](https://github.com/getwidget/getwidget) - Open source UI library.
+* **TDesign:** [github.com/Tencent/tdesign-flutter](https://github.com/Tencent/tdesign-flutter) - Enterprise design system by Tencent.
+* **Flutter Neumorphic:** [github.com/Idean/Flutter-Neumorphic](https://github.com/Idean/Flutter-Neumorphic) - Neumorphic UI kit.
+
+  
+
+### STATE MANAGEMENT
+
+* **Bloc:** [github.com/felangel/bloc](https://github.com/felangel/bloc) - Predictable state management library.
+* **Riverpod:** [github.com/rrousselGit/river_pod](https://github.com/rrousselGit/river_pod) - Compile-safe reimplementation of Provider.
+* **Provider:** [github.com/rrousselGit/provider](https://github.com/rrousselGit/provider) - Wrapper around InheritedWidget.
+* **GetX:** [github.com/jonataslaw/getx](https://github.com/jonataslaw/getx) - Extra-light, reactive state management.
+* **MobX:** [github.com/mobxjs/mobx.dart](https://github.com/mobxjs/mobx.dart) - TFRP state management.
+* **Signals:** [github.com/rodydavis/signals.dart](https://github.com/rodydavis/signals.dart) - Reactive programming signal pattern.
+
+  
+
+### NAVIGATION & ROUTING
+
+* **GoRouter:** [github.com/csells/go_router](https://github.com/csells/go_router) - Declarative routing package.
+* **AutoRoute:** [github.com/Milad-Akarie/auto_route_library](https://github.com/Milad-Akarie/auto_route_library) - Code generation for routing.
+* **Beamer:** [github.com/slovnicki/beamer](https://github.com/slovnicki/beamer) - Navigator 2.0 implementation.
+
+  
+
+### ANIMATION & EFFECTS
+
+* **Lottie:** [github.com/xvrh/lottie-flutter](https://github.com/xvrh/lottie-flutter) - Render After Effects animations.
+* **Flutter Animate:** [pub.dev/packages/flutter_animate](https://pub.dev/packages/flutter_animate) - Performant animation effects library.
+* **Rive:** [github.com/rive-app/rive-flutter](https://github.com/rive-app/rive-flutter) - Interactive vector animations.
+* **Shimmer:** [github.com/hnvn/flutter_shimmer](https://github.com/hnvn/flutter_shimmer) - Loading effect.
+
+  
+
+### UTILITIES & TOOLS
+
+* **Flutter Launcher Icons:** [github.com/franzsilva/flutter_launcher_icons](https://github.com/franzsilva/flutter_launcher_icons) - Icon generator.
+* **FVM (Flutter Version Management):** [github.com/leoafarias/fvm](https://github.com/leoafarias/fvm) - Manage multiple Flutter SDK versions.
+* **Melos:** [github.com/invertase/melos](https://github.com/invertase/melos) - Monorepo management tool.
+* **Very Good CLI:** [github.com/VeryGoodOpenSource/very_good_cli](https://github.com/VeryGoodOpenSource/very_good_cli) - Project scaffolding tool.
+
+  
+### WEB & CROSS-PLATFORM MODERN UPDATES
+
+* **[MODERN UPDATE] Expo:** (External Knowledge) The mandated industry standard for React Native, allowing shared Next.js/Zustand logic for high-velocity cross-platform mobile development.
+* **[MODERN UPDATE] Remix / Astro:** (External Knowledge) Approved Next.js alternatives. Remix is approved for strict Web Fetch API standards (Horror Path compliance), and Astro is mandated for zero-JS hydration content sites.
+
+  
+
+\================================================================================
+
+PART 2: CORE DART PACKAGES (METADATA)
+
+\================================================================================
+
+  
+
+### CORE INFRASTRUCTURE
+
+* **Analyzer:** [pub.dev/packages/analyzer](https://pub.dev/packages/analyzer)
+    * **Description:** Static analysis of Dart code. Foundational for IDEs and linters.
+    * **Docs:** [github.com/dart-lang/sdk/tree/main/pkg/analyzer](https://github.com/dart-lang/sdk/tree/main/pkg/analyzer)
+* **Http:** [pub.dev/packages/http](https://pub.dev/packages/http)
+    * **Description:** Composable, multi-platform, Future-based API for HTTP requests.
+    * **Repo:** [github.com/dart-lang/http](https://github.com/dart-lang/http)
+* **Built Value:** [pub.dev/packages/built_value](https://pub.dev/packages/built_value)
+    * **Description:** Immutable value types, Enum classes, and JSON serialization.
+    * **Repo:** [github.com/google/built_value.dart](https://github.com/google/built_value.dart)
+
+  
+
+### DATA & PARSING
+
+* **UUID:** [pub.dev/packages/uuid](https://pub.dev/packages/uuid)
+    * **Description:** RFC4122 (v1, v4, v5, v6, v7, v8) UUID Generator.
+* **Archive:** [pub.dev/packages/archive](https://pub.dev/packages/archive)
+    * **Description:** Encoders/decoders for zip, tar, gzip, etc.
+* **PetitParser:** [pub.dev/packages/petitparser](https://pub.dev/packages/petitparser)
+    * **Description:** Dynamic parser framework for efficient grammars.
+* **Args:** [pub.dev/packages/args](https://pub.dev/packages/args)
+    * **Description:** Parser for command-line arguments.
+
+  
+
+### TESTING
+
+* **Test API:** [pub.dev/packages/test_api](https://pub.dev/packages/test_api)
+    * **Description:** Core API for Dart tests and expectations.
+* **Patrol:** [pub.dev/packages/patrol](https://pub.dev/packages/patrol)
+    * **Description:** Powerful UI testing framework (overcomes flutter_driver limits).
+* **[MODERN UPDATE] Playwright:** (External Knowledge)
+    * **Description:** The mandated web E2E equivalent to Patrol. Must be used to execute the "Horror Path" protocol for Next.js/React environments, simulating network collapses, injecting malicious payloads, and verifying retry/state-restoration behavior.
+
+  
+
+\================================================================================
+
+PART 3: DEVELOPER TOOLS & SERVICES
+
+\================================================================================
+
+  
+
+### NETWORKING & TUNNELING
+
+* **Ngrok:** [ngrok.com](https://ngrok.com)
+    * **Function:** Secure introspectable tunnels to localhost.
+    * **Usage:** `ngrok http 8080` exposes local port 8080 to the public internet via secure tunnel.
+    * **Setup:** Install -> Auth (add token) -> Run.
+
+  
+
+### BACKEND AS A SERVICE (BaaS)
+
+* **Firebase:** [firebase.google.com](https://firebase.google.com) - Auth, Database, Storage, Analytics.
+* **Supabase:** [supabase.com](https://supabase.com) - Open source Firebase alternative (Postgres).
+* **Appwrite:** [appwrite.io](https://appwrite.io) - Secure backend server for Web, Mobile & Flutter.
+* **Serverpod:** [serverpod.dev](https://serverpod.dev) - Backend written in Dart.
+* **[MODERN UPDATE] Convex:** (External Knowledge) Approved highly-optimized BaaS for React/Next.js, replacing Prisma/Supabase for purely TypeScript environments.
+* **[MODERN UPDATE] Clerk / Better Auth:** (External Knowledge) Mandated modern standalone auth providers ensuring accessible UI and edge-runtime compliance.
+* **[MODERN UPDATE] PocketBase:** (External Knowledge) Approved single-file Go backend with embedded SQLite for maximum solo-developer velocity.
+
+  
+
+### OPEN SOURCE APPS (REFERENCE)
+
+* **AppFlowy:** [github.com/AppFlowy-IO/appflowy](https://github.com/AppFlowy-IO/appflowy) - Notion alternative (Flutter + Rust).
+* **RustDesk:** [github.com/rustdesk/rustdesk](https://github.com/rustdesk/rustdesk) - Remote desktop software (Flutter + Rust).
+* **Spotube:** [github.com/KRTirtho/spotube](https://github.com/KRTirtho/spotube) - Spotify client.
+* **History of Everything:** [github.com/2d-inc/HistoryOfEverything](https://github.com/2d-inc/HistoryOfEverything) - Vertical timeline animation demo.
+```
+
+--- END SEMANTIC FILE: .\docs\architecture\004_EXTERNAL_LIBS_AND_RESOURCES.md ---
+
+--- START SEMANTIC FILE: .\ios\Flutter\flutter_export_environment.sh ---
+#!/bin/sh
+# This is a generated file; do not edit or check into version control.
+export "FLUTTER_ROOT=C:\src\flutter"
+export "FLUTTER_APPLICATION_PATH=G:\caris_industries\the_caris_stack\flutter\android_app_template"
+export "COCOAPODS_PARALLEL_CODE_SIGN=true"
+export "FLUTTER_TARGET=lib\main.dart"
+export "FLUTTER_BUILD_DIR=build"
+export "FLUTTER_BUILD_NAME=1.0.0"
+export "FLUTTER_BUILD_NUMBER=1"
+export "DART_OBFUSCATION=false"
+export "TRACK_WIDGET_CREATION=true"
+export "TREE_SHAKE_ICONS=false"
+export "PACKAGE_CONFIG=.dart_tool/package_config.json"
+
+--- END SEMANTIC FILE: .\ios\Flutter\flutter_export_environment.sh ---
+
+--- START SEMANTIC FILE: .\ios\Flutter\ephemeral\flutter_lldb_helper.py ---
+import lldb
+
+def handle_new_rx_page(frame: lldb.SBFrame, bp_loc, extra_args, intern_dict):
+    base = frame.register['x0'].GetValueAsAddress()
+    page_len = frame.register['x1'].GetValueAsUnsigned()
+    data = bytearray(page_len)
+    data[0:8] = b'IHELPED!'
+    error = lldb.SBError()
+    frame.GetThread().GetProcess().WriteMemory(base, data, error)
+    if not error.Success():
+        print(f'Failed to write into {base}[+{page_len}]', error)
+        return
+
+def __lldb_init_module(debugger: lldb.SBDebugger, _):
+    target = debugger.GetDummyTarget()
+    bp = target.BreakpointCreateByRegex('^NOTIFY_DEBUGGER_ABOUT_RX_PAGES$')
+    bp.SetScriptCallbackFunction('{}.handle_new_rx_page'.format(__name__))
+    bp.SetAutoContinue(True)
+    print('-- LLDB integration loaded --')
+--- END SEMANTIC FILE: .\ios\Flutter\ephemeral\flutter_lldb_helper.py ---
+
+--- START SEMANTIC FILE: .\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md ---
+# Launch Screen Assets
+
+You can customize the launch screen with your own desired assets by replacing the image files in this directory.
+
+You can also do it by opening your Flutter project's Xcode project with `open ios/Runner.xcworkspace`, selecting `Runner/Assets.xcassets` in the Project Navigator and dropping in the desired images.
+--- END SEMANTIC FILE: .\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md ---
+
+--- START SEMANTIC FILE: .\lib\app.dart ---
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'core/app_router.dart';
+import 'core/app_theme.dart';
+class CarisApp extends ConsumerWidget {
+  const CarisApp({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(appRouterProvider);
+    return MaterialApp.router(
+      title: 'Caris Stack Template',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      routerConfig: router,
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\app.dart ---
+
+--- START SEMANTIC FILE: .\lib\main.dart ---
+import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'app.dart';
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const ProviderScope(child: CarisApp()));
+}
+--- END SEMANTIC FILE: .\lib\main.dart ---
+
+--- START SEMANTIC FILE: .\lib\core\app_router.dart ---
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:android_app_template/features/home/presentation/view.dart';
+final appRouterProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    routes: <RouteBase>[
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const HomeView(),
+      ),
+    ],
+  );
+});
+--- END SEMANTIC FILE: .\lib\core\app_router.dart ---
+
+--- START SEMANTIC FILE: .\lib\core\app_theme.dart ---
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'design_tokens.dart';
+abstract final class AppTheme {
+  static ThemeData get lightTheme {
+    const minimumTouchTarget = Size(
+      AppTouchTargets.minSize,
+      AppTouchTargets.minSize,
+    );
+    const buttonPadding = EdgeInsets.symmetric(
+      horizontal: AppSpacing.x4,
+      vertical: AppSpacing.x3,
+    );
+    final textTheme = TextTheme(
+      displayLarge: GoogleFonts.dmSerifDisplay(
+        fontSize: AppTypography.displayLargeSize,
+        height: 0.9,
+        letterSpacing: -1.5,
+        color: AppColors.primaryText,
+      ),
+      displayMedium: GoogleFonts.dmSerifDisplay(
+        fontSize: AppTypography.displayMediumSize,
+        height: 1.0,
+        letterSpacing: -0.5,
+        color: AppColors.primaryText,
+      ),
+      bodyMedium: GoogleFonts.ibmPlexSans(
+        fontSize: AppTypography.bodyMediumSize,
+        height: 1.5,
+        color: AppColors.primaryText.withValues(alpha: 0.8),
+      ),
+      labelMedium: GoogleFonts.ibmPlexSans(
+        fontSize: AppTypography.labelMediumSize,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.5,
+        color: AppColors.primaryText,
+      ),
+    );
+    return ThemeData(
+      useMaterial3: true,
+      scaffoldBackgroundColor: AppColors.backgroundOffWhite,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primaryText,
+        secondary: AppColors.accent,
+        surface: AppColors.backgroundOffWhite,
+        onPrimary: AppColors.backgroundOffWhite,
+        onSecondary: AppColors.backgroundOffWhite,
+        onSurface: AppColors.primaryText,
+      ),
+      textTheme: textTheme,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: _buttonStyle(
+          minimumSize: minimumTouchTarget,
+          padding: buttonPadding,
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: _buttonStyle(
+          minimumSize: minimumTouchTarget,
+          padding: buttonPadding,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: _buttonStyle(
+          minimumSize: minimumTouchTarget,
+          padding: buttonPadding,
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: const ButtonStyle(
+          minimumSize: WidgetStatePropertyAll(minimumTouchTarget),
+          padding: WidgetStatePropertyAll(EdgeInsets.all(AppSpacing.x3)),
+        ),
+      ),
+      inputDecorationTheme: const InputDecorationTheme(
+        border: OutlineInputBorder(),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.x3,
+          vertical: AppSpacing.x3,
+        ),
+      ),
+    );
+  }
+  static ButtonStyle _buttonStyle({
+    required Size minimumSize,
+    required EdgeInsets padding,
+  }) {
+    return ButtonStyle(
+      minimumSize: WidgetStatePropertyAll(minimumSize),
+      padding: WidgetStatePropertyAll(padding),
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\core\app_theme.dart ---
+
+--- START SEMANTIC FILE: .\lib\core\design_tokens.dart ---
+import 'package:flutter/material.dart';
+abstract final class AppColors {
+  static const Color backgroundOffWhite = Color(0xFFF8F9FA);
+  static const Color richDarkBackground = Color(0xFF14181F);
+  static const Color primaryText = Color(0xFF0A0A0A);
+  static const Color accent = Color(0xFF0055FF);
+  static const Color muted = Color(0xFF64748B);
+}
+abstract final class AppTypography {
+  static const double labelMediumSize = 12;
+  static const double bodyMediumSize = 16;
+  static const double displayMediumSize = 32;
+  static const double displayLargeSize = 64;
+}
+abstract final class AppSpacing {
+  static const double x1 = 4;
+  static const double x2 = 8;
+  static const double x3 = 16;
+  static const double x4 = 32;
+  static const double x5 = 64;
+}
+abstract final class AppTouchTargets {
+  static const double minSize = 44;
+}
+--- END SEMANTIC FILE: .\lib\core\design_tokens.dart ---
+
+--- START SEMANTIC FILE: .\lib\data\draft_store.dart ---
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+abstract class DraftStore {
+  Future<void> saveDraft({
+    required String key,
+    required Map<String, dynamic> payload,
+  });
+  Future<Map<String, dynamic>?> restoreDraft({required String key});
+  Future<void> clearDraft({required String key});
+}
+class SharedPreferencesDraftStore implements DraftStore {
+  const SharedPreferencesDraftStore({this.namespace = 'caris_drafts'});
+  final String namespace;
+  @override
+  Future<void> saveDraft({
+    required String key,
+    required Map<String, dynamic> payload,
+  }) async {
+    final encoded = jsonEncode(payload);
+    if (encoded.length > 50000) {
+      throw ArgumentError(
+        'Draft exceeds shared_preferences safe payload size.',
+      );
+    }
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.setString(_storageKey(key), encoded);
+  }
+  @override
+  Future<Map<String, dynamic>?> restoreDraft({required String key}) async {
+    final preferences = await SharedPreferences.getInstance();
+    final encoded = preferences.getString(_storageKey(key));
+    if (encoded == null || encoded.isEmpty) {
+      return null;
+    }
+    final decoded = jsonDecode(encoded);
+    if (decoded is Map<String, dynamic>) {
+      return decoded;
+    }
+    return null;
+  }
+  @override
+  Future<void> clearDraft({required String key}) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.remove(_storageKey(key));
+  }
+  String _storageKey(String key) => '$namespace:$key';
+}
+--- END SEMANTIC FILE: .\lib\data\draft_store.dart ---
+
+--- START SEMANTIC FILE: .\lib\data\providers.dart ---
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'draft_store.dart';
+import 'retry_policy.dart';
+final draftStoreProvider = Provider<DraftStore>((ref) {
+  return const SharedPreferencesDraftStore();
+});
+final retryHttpClientProvider = Provider<RetryHttpClient>((ref) {
+  final client = RetryHttpClient(client: http.Client());
+  ref.onDispose(client.close);
+  return client;
+});
+--- END SEMANTIC FILE: .\lib\data\providers.dart ---
+
+--- START SEMANTIC FILE: .\lib\data\retry_policy.dart ---
+import 'dart:async';
+import 'package:http/http.dart' as http;
+class CircuitBreakerOpenException implements Exception {
+  const CircuitBreakerOpenException({required this.retryAfter});
+  final Duration retryAfter;
+  @override
+  String toString() {
+    return 'Circuit breaker open; retry after ${retryAfter.inMilliseconds}ms.';
+  }
+}
+class RetryExhaustedException implements Exception {
+  const RetryExhaustedException(this.message);
+  final String message;
+  @override
+  String toString() => message;
+}
+class RetryPolicy {
+  const RetryPolicy({
+    this.maxAttempts = 3,
+    this.initialDelay = const Duration(milliseconds: 300),
+    this.maxDelay = const Duration(seconds: 3),
+    this.backoffMultiplier = 2,
+    this.failureThreshold = 5,
+    this.circuitOpenFor = const Duration(seconds: 20),
+    this.requestTimeout = const Duration(seconds: 10),
+  });
+  final int maxAttempts;
+  final Duration initialDelay;
+  final Duration maxDelay;
+  final double backoffMultiplier;
+  final int failureThreshold;
+  final Duration circuitOpenFor;
+  final Duration requestTimeout;
+  Duration backoffForAttempt(int attempt) {
+    final scaledMilliseconds =
+        initialDelay.inMilliseconds *
+        _pow(backoffMultiplier, attempt - 1).toInt();
+    final cappedMilliseconds = scaledMilliseconds.clamp(
+      initialDelay.inMilliseconds,
+      maxDelay.inMilliseconds,
+    );
+    return Duration(milliseconds: cappedMilliseconds);
+  }
+  bool isRetryableResponse(http.Response response) {
+    return response.statusCode == 429 || response.statusCode >= 500;
+  }
+  bool isRetryableError(Object error) {
+    return error is TimeoutException || error is http.ClientException;
+  }
+}
+class RetryHttpClient {
+  RetryHttpClient({
+    required http.Client client,
+    this.policy = const RetryPolicy(),
+  }) : _client = client;
+  final http.Client _client;
+  final RetryPolicy policy;
+  int _consecutiveFailures = 0;
+  DateTime? _openedAt;
+  bool _halfOpenProbeInFlight = false;
+  Future<http.Response> execute(
+    Future<http.Response> Function(http.Client client) request, {
+    required bool isIdempotent,
+  }) async {
+    Object? lastError;
+    for (var attempt = 1; attempt <= policy.maxAttempts; attempt++) {
+      _guardCircuit();
+      try {
+        final response = await request(_client).timeout(policy.requestTimeout);
+        if (!policy.isRetryableResponse(response)) {
+          _recordSuccess();
+          return response;
+        }
+        if (!isIdempotent || attempt == policy.maxAttempts) {
+          _recordFailure();
+          throw RetryExhaustedException(
+            'Retry limit reached. Last status: ${response.statusCode}.',
+          );
+        }
+        _recordFailure();
+      } catch (error) {
+        lastError = error;
+        if (error is CircuitBreakerOpenException) {
+          rethrow;
+        }
+        if (!isIdempotent ||
+            !policy.isRetryableError(error) ||
+            attempt == policy.maxAttempts) {
+          _recordFailure();
+          rethrow;
+        }
+        _recordFailure();
+      }
+      await Future<void>.delayed(policy.backoffForAttempt(attempt));
+    }
+    throw RetryExhaustedException(
+      'Retry limit reached with no successful response. Last error: $lastError',
+    );
+  }
+  void close() {
+    _client.close();
+  }
+  void _guardCircuit() {
+    final openedAt = _openedAt;
+    if (openedAt == null) {
+      return;
+    }
+    final elapsed = DateTime.now().difference(openedAt);
+    if (elapsed < policy.circuitOpenFor) {
+      throw CircuitBreakerOpenException(
+        retryAfter: policy.circuitOpenFor - elapsed,
+      );
+    }
+    if (_halfOpenProbeInFlight) {
+      throw const CircuitBreakerOpenException(
+        retryAfter: Duration(milliseconds: 500),
+      );
+    }
+    _halfOpenProbeInFlight = true;
+  }
+  void _recordSuccess() {
+    _consecutiveFailures = 0;
+    _openedAt = null;
+    _halfOpenProbeInFlight = false;
+  }
+  void _recordFailure() {
+    if (_halfOpenProbeInFlight) {
+      _halfOpenProbeInFlight = false;
+      _openedAt = DateTime.now();
+      _consecutiveFailures = policy.failureThreshold;
+      return;
+    }
+    _consecutiveFailures += 1;
+    if (_consecutiveFailures >= policy.failureThreshold) {
+      _openedAt = DateTime.now();
+    }
+  }
+}
+double _pow(double base, int exponent) {
+  var result = 1.0;
+  for (var i = 0; i < exponent; i++) {
+    result *= base;
+  }
+  return result;
+}
+--- END SEMANTIC FILE: .\lib\data\retry_policy.dart ---
+
+--- START SEMANTIC FILE: .\lib\features\home\presentation\state.dart ---
+class HomeState {
+  const HomeState({
+    this.draftText = '',
+    this.isSubmitting = false,
+    this.statusMessage,
+    this.errorMessage,
+  });
+  static const Object _unset = Object();
+  final String draftText;
+  final bool isSubmitting;
+  final String? statusMessage;
+  final String? errorMessage;
+  HomeState copyWith({
+    String? draftText,
+    bool? isSubmitting,
+    Object? statusMessage = _unset,
+    Object? errorMessage = _unset,
+  }) {
+    return HomeState(
+      draftText: draftText ?? this.draftText,
+      isSubmitting: isSubmitting ?? this.isSubmitting,
+      statusMessage:
+          identical(statusMessage, _unset)
+              ? this.statusMessage
+              : statusMessage as String?,
+      errorMessage:
+          identical(errorMessage, _unset)
+              ? this.errorMessage
+              : errorMessage as String?,
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\features\home\presentation\state.dart ---
+
+--- START SEMANTIC FILE: .\lib\features\home\presentation\view.dart ---
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:android_app_template/core/design_tokens.dart';
+import 'viewmodel.dart';
+import 'widgets/action_button.dart';
+class HomeView extends ConsumerWidget {
+  const HomeView({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(homeViewModelProvider);
+    final viewModel = ref.read(homeViewModelProvider.notifier);
+    final theme = Theme.of(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Caris Stack',
+          style: theme.textTheme.labelMedium,
+        ),
+      ),
+      body: HookBuilder(
+        builder: (context) {
+          final controller = useTextEditingController(text: state.draftText);
+          useEffect(() {
+            Future<void>.microtask(viewModel.restoreDraft);
+            return null;
+          }, const []);
+          useEffect(() {
+            if (controller.text == state.draftText) {
+              return null;
+            }
+            controller.value = TextEditingValue(
+              text: state.draftText,
+              selection: TextSelection.collapsed(
+                offset: state.draftText.length,
+              ),
+            );
+            return null;
+          }, <Object?>[state.draftText]);
+          return Padding(
+            padding: const EdgeInsets.all(AppSpacing.x4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Unforgettable Aesthetic',
+                  style: theme.textTheme.displayMedium,
+                ),
+                const SizedBox(height: AppSpacing.x3),
+                Text(
+                  'MVVM + Draft-first recovery before network mutation.',
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: AppSpacing.x4),
+                TextField(
+                  controller: controller,
+                  minLines: 4,
+                  maxLines: 8,
+                  onChanged: viewModel.updateDraft,
+                  decoration: const InputDecoration(
+                    labelText: 'Recoverable Draft Input',
+                    hintText: 'Type text and test failure-safe persistence.',
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.x3),
+                if (state.statusMessage != null)
+                  Text(
+                    'Status: ${state.statusMessage}',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                if (state.errorMessage != null)
+                  Text(
+                    state.errorMessage!,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                const Spacer(),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: ActionButton(
+                        label: 'Clear Draft',
+                        onPressed:
+                            state.isSubmitting ? null : viewModel.clearLocalDraft,
+                        primary: false,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.x3),
+                    Expanded(
+                      child: ActionButton(
+                        label:
+                            state.isSubmitting
+                                ? 'Submitting...'
+                                : 'Save + Submit',
+                        onPressed: state.isSubmitting ? null : viewModel.submitDraft,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\features\home\presentation\view.dart ---
+
+--- START SEMANTIC FILE: .\lib\features\home\presentation\viewmodel.dart ---
+import 'dart:convert';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:android_app_template/data/draft_store.dart';
+import 'package:android_app_template/data/providers.dart';
+import 'package:android_app_template/data/retry_policy.dart';
+import 'state.dart';
+final homeViewModelProvider = NotifierProvider<HomeViewModel, HomeState>(
+  HomeViewModel.new,
+);
+class HomeViewModel extends Notifier<HomeState> {
+  static const String _draftKey = 'home_submission_draft';
+  DraftStore get _draftStore => ref.read(draftStoreProvider);
+  RetryHttpClient get _retryClient => ref.read(retryHttpClientProvider);
+  @override
+  HomeState build() {
+    return const HomeState();
+  }
+  Future<void> restoreDraft() async {
+    final draft = await _draftStore.restoreDraft(key: _draftKey);
+    final restoredText = draft?['text']?.toString() ?? '';
+    if (restoredText.isEmpty) {
+      return;
+    }
+    state = state.copyWith(
+      draftText: restoredText,
+      statusMessage: 'Recovered local draft after failure/restart.',
+      errorMessage: null,
+    );
+  }
+  void updateDraft(String value) {
+    state = state.copyWith(
+      draftText: value,
+      statusMessage: null,
+      errorMessage: null,
+    );
+  }
+  Future<void> submitDraft() async {
+    if (state.isSubmitting) {
+      return;
+    }
+    final text = state.draftText.trim();
+    if (text.isEmpty) {
+      state = state.copyWith(
+        statusMessage: null,
+        errorMessage: 'Error: add content before submit.',
+      );
+      return;
+    }
+    final payload = <String, dynamic>{
+      'text': text,
+      'createdAt': DateTime.now().toUtc().toIso8601String(),
+    };
+    await _draftStore.saveDraft(key: _draftKey, payload: payload);
+    state = state.copyWith(
+      isSubmitting: true,
+      statusMessage: 'Draft persisted locally. Submitting to network...',
+      errorMessage: null,
+    );
+    try {
+      final response = await _retryClient.execute(
+        (client) => client.post(
+          Uri.parse('https:
+          headers: const <String, String>{'content-type': 'application/json'},
+          body: jsonEncode(payload),
+        ),
+        isIdempotent: false,
+      );
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        await _draftStore.clearDraft(key: _draftKey);
+        state = state.copyWith(
+          isSubmitting: false,
+          statusMessage: 'Submission succeeded. Local draft cleared.',
+          errorMessage: null,
+        );
+        return;
+      }
+      state = state.copyWith(
+        isSubmitting: false,
+        statusMessage: null,
+        errorMessage:
+            'Error: upstream returned ${response.statusCode}. Draft retained for retry.',
+      );
+    } on CircuitBreakerOpenException catch (error) {
+      state = state.copyWith(
+        isSubmitting: false,
+        statusMessage: null,
+        errorMessage:
+            'Error: service unavailable. Retry in ${error.retryAfter.inSeconds}s. Draft retained.',
+      );
+    } catch (_) {
+      state = state.copyWith(
+        isSubmitting: false,
+        statusMessage: null,
+        errorMessage: 'Error: network failure. Draft retained for retry.',
+      );
+    }
+  }
+  Future<void> clearLocalDraft() async {
+    await _draftStore.clearDraft(key: _draftKey);
+    state = state.copyWith(
+      draftText: '',
+      isSubmitting: false,
+      statusMessage: 'Local draft cleared.',
+      errorMessage: null,
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\features\home\presentation\viewmodel.dart ---
+
+--- START SEMANTIC FILE: .\lib\features\home\presentation\widgets\action_button.dart ---
+import 'package:flutter/material.dart';
+import 'package:android_app_template/shared/widgets/min_touch_target.dart';
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.primary = true,
+  });
+  final String label;
+  final VoidCallback? onPressed;
+  final bool primary;
+  @override
+  Widget build(BuildContext context) {
+    final button =
+        primary
+            ? ElevatedButton(
+              onPressed: onPressed,
+              child: Text(label),
+            )
+            : OutlinedButton(
+              onPressed: onPressed,
+              child: Text(label),
+            );
+    return MinTouchTarget(child: button);
+  }
+}
+--- END SEMANTIC FILE: .\lib\features\home\presentation\widgets\action_button.dart ---
+
+--- START SEMANTIC FILE: .\lib\shared\widgets\min_touch_target.dart ---
+import 'package:flutter/widgets.dart';
+import 'package:android_app_template/core/design_tokens.dart';
+class MinTouchTarget extends StatelessWidget {
+  const MinTouchTarget({
+    super.key,
+    required this.child,
+    this.minWidth = AppTouchTargets.minSize,
+    this.minHeight = AppTouchTargets.minSize,
+  });
+  final Widget child;
+  final double minWidth;
+  final double minHeight;
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        minWidth: minWidth,
+        minHeight: minHeight,
+      ),
+      child: child,
+    );
+  }
+}
+--- END SEMANTIC FILE: .\lib\shared\widgets\min_touch_target.dart ---
+
+--- START SEMANTIC FILE: .\macos\Flutter\ephemeral\flutter_export_environment.sh ---
+#!/bin/sh
+# This is a generated file; do not edit or check into version control.
+export "FLUTTER_ROOT=C:\src\flutter"
+export "FLUTTER_APPLICATION_PATH=G:\caris_industries\the_caris_stack\flutter\android_app_template"
+export "COCOAPODS_PARALLEL_CODE_SIGN=true"
+export "FLUTTER_BUILD_DIR=build"
+export "FLUTTER_BUILD_NAME=1.0.0"
+export "FLUTTER_BUILD_NUMBER=1"
+export "DART_OBFUSCATION=false"
+export "TRACK_WIDGET_CREATION=true"
+export "TREE_SHAKE_ICONS=false"
+export "PACKAGE_CONFIG=.dart_tool/package_config.json"
+
+--- END SEMANTIC FILE: .\macos\Flutter\ephemeral\flutter_export_environment.sh ---
+
+--- START SEMANTIC FILE: .\scripts\complexity_gate.py ---
+# [AST Parse Error: invalid non-printable character U+FEFF (<unknown>, line 1)]
+﻿#!/usr/bin/env python3
+"""Caris Stack complexity routing gate.
+
+- Computes max cyclomatic complexity on changed source files using lizard.
+- Emits both a complexity route and an audit route.
+- Fails CI when max complexity exceeds the high threshold or high-risk paths are touched.
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import io
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+SUPPORTED_EXTENSIONS = {
+    ".py",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".dart",
+    ".go",
+    ".rs",
+    ".java",
+    ".kt",
+    ".swift",
+}
+
+HIGH_RISK_EXACT_PATHS = {
+    "000_quickstart_implementation_manual.md",
+    "001_system_rules_and_roadmaps.md",
+    "002_flutter_arch_docs_consolidated.md",
+    "002b_nextjs_react_arch_docs.md",
+    "002c_universal_arch_blueprint.md",
+    "003_dev_skills_and_protocols.md",
+    "004_external_libs_and_resources.md",
+    "005_toolbox_scripts.md",
+    "lefthook.yml",
+    ".github/workflows/caris-hard-gates.yml",
+}
+
+HIGH_RISK_PREFIXES = (
+    "scripts/enforce_exclusion_zones.",
+    "templates/guardrails/",
+)
+
+DEFAULT_SEMANTIC_RISK_CONFIG = "templates/guardrails/semantic_risk_keywords.json"
+
+DEFAULT_SEMANTIC_RISK_RULES = (
+    {
+        "id": "payments_billing",
+        "pattern": r"\b(payment|billing|invoice|refund|charge|checkout)\b",
+    },
+    {
+        "id": "auth_credentials",
+        "pattern": r"\b(auth|oauth|login|password|credential|jwt|bearer|access[_-]?token|refresh[_-]?token|api[_-]?key|secret)\b",
+    },
+    {
+        "id": "encryption_crypto",
+        "pattern": r"\b(encrypt(?:ion|ed)?|decrypt(?:ion|ed)?|encryption)\b",
+    },
+)
+
+SEMANTIC_SCAN_EXTENSIONS = SUPPORTED_EXTENSIONS | {
+    ".sql",
+    ".prisma",
+    ".yml",
+    ".yaml",
+    ".json",
+    ".toml",
+    ".env",
+}
+
+MAX_SEMANTIC_SCAN_BYTES = 512_000
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run cyclomatic complexity routing gate.")
+    parser.add_argument("--file-list", required=True, help="Path to newline-delimited changed files list.")
+    parser.add_argument("--low", type=int, default=5, help="Low/medium threshold (default: 5).")
+    parser.add_argument("--high", type=int, default=20, help="Medium/high threshold (default: 20).")
+    parser.add_argument(
+        "--semantic-risk-config",
+        default=None,
+        help=(
+            "Optional JSON file defining semantic risk regex rules. "
+            f"Defaults to `{DEFAULT_SEMANTIC_RISK_CONFIG}` when present."
+        ),
+    )
+    return parser.parse_args()
+
+
+def load_changed_paths(file_list_path: str) -> list[str]:
+    lines = Path(file_list_path).read_text(encoding="utf-8").splitlines()
+    files: list[str] = []
+    for raw in lines:
+        path = raw.strip().lstrip("\ufeff")
+        if not path:
+            continue
+        files.append(path)
+    return files
+
+
+def filter_supported_source_files(paths: list[str]) -> list[str]:
+    files: list[str] = []
+    for path in paths:
+        p = Path(path)
+        if p.suffix.lower() not in SUPPORTED_EXTENSIONS:
+            continue
+        if not p.exists() or not p.is_file():
+            continue
+        files.append(path)
+    return files
+
+
+def normalize_path(path: str) -> str:
+    return path.replace("\\", "/").lstrip("./").lower()
+
+
+def detect_high_risk_changes(paths: list[str]) -> list[str]:
+    matches: list[str] = []
+    seen: set[str] = set()
+
+    for path in paths:
+        norm = normalize_path(path)
+        if not norm:
+            continue
+
+        high_risk = False
+        if norm in HIGH_RISK_EXACT_PATHS:
+            high_risk = True
+        elif norm.startswith(HIGH_RISK_PREFIXES):
+            high_risk = True
+        elif norm.endswith(".sql") or norm.endswith(".prisma"):
+            high_risk = True
+        elif "/migrations/" in f"/{norm}":
+            high_risk = True
+
+        if high_risk and norm not in seen:
+            matches.append(path)
+            seen.add(norm)
+
+    return matches
+
+
+def resolve_semantic_risk_config_path(cli_value: str | None) -> Path | None:
+    if cli_value:
+        path = Path(cli_value)
+        return path if path.is_absolute() else (Path.cwd() / path)
+
+    env_path = os.environ.get("CARIS_SEMANTIC_RISK_CONFIG")
+    if env_path:
+        path = Path(env_path)
+        return path if path.is_absolute() else (Path.cwd() / path)
+
+    default_path = Path.cwd() / DEFAULT_SEMANTIC_RISK_CONFIG
+    if default_path.exists():
+        return default_path
+    return None
+
+
+def load_semantic_risk_rules(config_path: str | None) -> list[tuple[str, re.Pattern[str]]]:
+    path = resolve_semantic_risk_config_path(config_path)
+    raw_rules: list[dict[str, str]]
+
+    if path is None:
+        raw_rules = [dict(rule) for rule in DEFAULT_SEMANTIC_RISK_RULES]
+    else:
+        if not path.exists():
+            print(f"[ERROR] Semantic risk config not found: {path}")
+            raise SystemExit(2)
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            print(f"[ERROR] Failed to parse semantic risk config ({path}): {exc}")
+            raise SystemExit(2)
+
+        section = payload.get("semanticRiskRules", payload)
+        if not isinstance(section, list):
+            print(f"[ERROR] semantic risk config must contain a list at `semanticRiskRules`: {path}")
+            raise SystemExit(2)
+
+        raw_rules = []
+        for item in section:
+            if not isinstance(item, dict):
+                continue
+            rule_id = str(item.get("id", "")).strip()
+            pattern = str(item.get("pattern", "")).strip()
+            if not rule_id or not pattern:
+                continue
+            raw_rules.append({"id": rule_id, "pattern": pattern})
+
+        if not raw_rules:
+            print(f"[ERROR] semantic risk config contains no valid rules: {path}")
+            raise SystemExit(2)
+
+    compiled: list[tuple[str, re.Pattern[str]]] = []
+    for rule in raw_rules:
+        rule_id = rule["id"]
+        pattern = rule["pattern"]
+        try:
+            compiled.append((rule_id, re.compile(pattern, re.IGNORECASE)))
+        except re.error as exc:
+            print(f"[ERROR] Invalid semantic risk regex in rule `{rule_id}`: {exc}")
+            raise SystemExit(2)
+
+    return compiled
+
+
+def should_semantic_scan(path: str) -> bool:
+    p = Path(path)
+    suffix = p.suffix.lower()
+    if suffix in SEMANTIC_SCAN_EXTENSIONS:
+        return True
+    name = p.name.lower()
+    if name in {".env", ".env.local", ".env.production"}:
+        return True
+    return False
+
+
+def read_text_for_semantic_scan(path: str) -> str | None:
+    file_path = Path(path)
+    try:
+        if not file_path.exists() or not file_path.is_file():
+            return None
+        if file_path.stat().st_size > MAX_SEMANTIC_SCAN_BYTES:
+            return None
+        return file_path.read_text(encoding="utf-8", errors="ignore")
+    except OSError:
+        return None
+
+
+def detect_semantic_risk_changes(
+    paths: list[str], semantic_rules: list[tuple[str, re.Pattern[str]]]
+) -> dict[str, list[str]]:
+    hits: dict[str, list[str]] = {}
+
+    for path in paths:
+        if not should_semantic_scan(path):
+            continue
+
+        text = read_text_for_semantic_scan(path)
+        if not text:
+            continue
+
+        matched_rule_ids = [rule_id for rule_id, pattern in semantic_rules if pattern.search(text)]
+        if matched_rule_ids:
+            hits[path] = sorted(set(matched_rule_ids))
+
+    return hits
+
+
+def run_lizard(files: list[str]) -> tuple[int, str, str]:
+    cmd = ["lizard", "-CSV", *files]
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True)
+        return proc.returncode, proc.stdout, proc.stderr
+    except FileNotFoundError:
+        return 127, "", "lizard executable not found. Install with: python -m pip install lizard"
+
+
+def parse_max_complexity(csv_output: str) -> tuple[int, str]:
+    max_ccn = 0
+    worst = "n/a"
+
+    reader = csv.DictReader(io.StringIO(csv_output))
+    for row in reader:
+        ccn_raw = row.get("CCN") or row.get("CCN\n") or "0"
+        try:
+            ccn = int(float(ccn_raw))
+        except ValueError:
+            ccn = 0
+
+        if ccn > max_ccn:
+            max_ccn = ccn
+            func = (row.get("function") or "<unknown>").strip()
+            file_name = (row.get("file") or "<unknown>").strip()
+            worst = f"{file_name}:{func}"
+
+    return max_ccn, worst
+
+
+def main() -> int:
+    args = parse_args()
+    changed_paths = load_changed_paths(args.file_list)
+    files = filter_supported_source_files(changed_paths)
+    high_risk_paths = detect_high_risk_changes(changed_paths)
+    semantic_rules = load_semantic_risk_rules(args.semantic_risk_config)
+    semantic_risk_hits = detect_semantic_risk_changes(changed_paths, semantic_rules)
+    has_high_risk_override = bool(high_risk_paths) or bool(semantic_risk_hits)
+
+    if high_risk_paths:
+        print("[AUDIT ROUTE] Stop-and-Think (high-risk override).")
+        print("[AUDIT] High-risk paths detected:")
+        for path in high_risk_paths:
+            print(f"  - {path}")
+
+    if semantic_risk_hits:
+        print("[AUDIT ROUTE] Stop-and-Think (semantic risk override).")
+        print("[AUDIT] Semantic risk triggers detected:")
+        for path, keywords in sorted(semantic_risk_hits.items()):
+            joined = ", ".join(keywords)
+            print(f"  - {path} [keywords: {joined}]")
+
+    if not files:
+        print("[INFO] No supported source files changed. Complexity score = 0 (Fast Model route).")
+        if has_high_risk_override:
+            print("[ERROR] Manual Stop-and-Think audit required for high-risk or semantic-risk changes.")
+            return 1
+        print("[AUDIT ROUTE] Self-Certify (low complexity, no high-risk paths).")
+        return 0
+
+    code, stdout, stderr = run_lizard(files)
+    if code != 0 and not stdout.strip():
+        print("[ERROR] lizard failed to analyze files.")
+        if stderr.strip():
+            print(stderr.strip())
+        return 2
+
+    max_ccn, worst = parse_max_complexity(stdout)
+    print(f"[INFO] Max cyclomatic complexity = {max_ccn}")
+    print(f"[INFO] Worst function = {worst}")
+
+    if max_ccn < args.low:
+        print("[ROUTE] Fast Model (syntax/format checks).")
+        if has_high_risk_override:
+            print("[ERROR] High-risk/semantic-risk override requires manual Stop-and-Think audit.")
+            return 1
+        print("[AUDIT ROUTE] Self-Certify (low complexity, no high-risk paths).")
+        return 0
+
+    if max_ccn <= args.high:
+        print("[ROUTE] Standard Model (logic verification).")
+        if has_high_risk_override:
+            print("[ERROR] High-risk/semantic-risk override requires manual Stop-and-Think audit.")
+            return 1
+        print("[AUDIT ROUTE] Standard Audit (no high-risk override).")
+        return 0
+
+    print("[ERROR] Score > high threshold. Senior Architect + reasoning audit required.")
+    print("[AUDIT ROUTE] Stop-and-Think (high complexity).")
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+--- END SEMANTIC FILE: .\scripts\complexity_gate.py ---
+
+--- START SEMANTIC FILE: .\scripts\design_token_guard.py ---
+from __future__ import annotations
+import argparse
+import fnmatch
+import json
+import math
+import re
+import sys
+from dataclasses import dataclass
+from pathlib import Path
+SUPPORTED_EXTENSIONS = {'.css', '.scss', '.sass', '.less', '.js', '.jsx', '.ts', '.tsx', '.dart'}
+IGNORE_DIR_NAMES = {'.git', 'node_modules', 'dist', 'build', '.next', 'coverage', '__pycache__', 'experimental'}
+HEX_LITERAL_RE = re.compile('#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\\b')
+DART_COLOR_RE = re.compile('0x([0-9a-fA-F]{8})\\b')
+CSS_FONT_SIZE_RE = re.compile('(font-size\\s*:\\s*)(\\d+(?:\\.\\d+)?)(px\\b)', re.IGNORECASE)
+DART_FONT_SIZE_RE = re.compile('(fontSize\\s*:\\s*)(\\d+(?:\\.\\d+)?)\\b')
+
+@dataclass(frozen=True)
+class ColorToken:
+    token_id: str
+    hex_value: str
+    css_replacement: str | None = None
+    dart_replacement: str | None = None
+
+@dataclass(frozen=True)
+class FontSizeToken:
+    token_id: str
+    value_px: float
+    css_replacement: str | None = None
+    dart_replacement: str | None = None
+
+@dataclass
+class Violation:
+    path: str
+    line: int
+    col: int
+    code: str
+    message: str
+    suggestion: str | None = None
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description='Validate source files against locked design tokens.')
+    parser.add_argument('--root', default='.', help='Repo root to scan (default: current directory).')
+    parser.add_argument('--lockfile', default='templates/guardrails/design_tokens.lock.json', help='Path to design token lockfile JSON.')
+    parser.add_argument('--file-list', help='Optional newline-delimited file list (changed files). When provided, only these files are scanned.')
+    parser.add_argument('--autofix', action='store_true', help='Autofix raw CSS hex literals when an exact token mapping is available.')
+    return parser.parse_args()
+
+def normalize_path(path: str) -> str:
+    return path.replace('\\', '/').lstrip('./')
+
+def line_col_from_offset(text: str, offset: int) -> tuple[int, int]:
+    line = text.count('\n', 0, offset) + 1
+    last_newline = text.rfind('\n', 0, offset)
+    col = offset + 1 if last_newline < 0 else offset - last_newline
+    return (line, col)
+
+def normalize_hex(value: str) -> str:
+    raw = value.strip().upper()
+    if raw.startswith('0X'):
+        hex_part = raw[2:]
+        if len(hex_part) == 8:
+            return f'#{hex_part[2:]}'
+        raise ValueError(f'Unsupported 0x hex color length: {value}')
+    if not raw.startswith('#'):
+        raise ValueError(f'Expected hex literal: {value}')
+    body = raw[1:]
+    if len(body) == 3:
+        return '#' + ''.join((ch * 2 for ch in body))
+    if len(body) == 6:
+        return '#' + body
+    if len(body) == 8:
+        return '#' + body[:6]
+    raise ValueError(f'Unsupported hex literal length: {value}')
+
+def load_json(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding='utf-8'))
+    except FileNotFoundError:
+        print(f'[ERROR] Lockfile not found: {path}')
+        sys.exit(2)
+    except json.JSONDecodeError as exc:
+        print(f'[ERROR] Failed to parse lockfile JSON ({path}): {exc}')
+        sys.exit(2)
+
+def load_lockfile(path: Path) -> tuple[list[ColorToken], list[FontSizeToken], list[str]]:
+    data = load_json(path)
+    section = data.get('designTokenGuard', data)
+    color_entries = section.get('colors', [])
+    font_entries = section.get('fontSizesPx', [])
+    ignore_globs = [str(item) for item in section.get('ignoreGlobs', [])]
+    colors: list[ColorToken] = []
+    for entry in color_entries:
+        if not isinstance(entry, dict):
+            continue
+        token_id = str(entry.get('id', '')).strip()
+        hex_value = str(entry.get('hex', '')).strip()
+        if not token_id or not hex_value:
+            continue
+        colors.append(ColorToken(token_id=token_id, hex_value=normalize_hex(hex_value), css_replacement=str(entry['css']) if 'css' in entry else None, dart_replacement=str(entry['dart']) if 'dart' in entry else None))
+    fonts: list[FontSizeToken] = []
+    for entry in font_entries:
+        if not isinstance(entry, dict):
+            continue
+        token_id = str(entry.get('id', '')).strip()
+        raw_value = entry.get('value')
+        if not token_id or raw_value is None:
+            continue
+        try:
+            value_px = float(raw_value)
+        except (TypeError, ValueError):
+            continue
+        fonts.append(FontSizeToken(token_id=token_id, value_px=value_px, css_replacement=str(entry['css']) if 'css' in entry else None, dart_replacement=str(entry['dart']) if 'dart' in entry else None))
+    if not colors and (not fonts):
+        print(f'[ERROR] Lockfile contains no `colors` or `fontSizesPx` entries: {path}')
+        sys.exit(2)
+    return (colors, fonts, ignore_globs)
+
+def is_supported_source(path: Path) -> bool:
+    return path.suffix.lower() in SUPPORTED_EXTENSIONS and path.is_file()
+
+def should_skip_file(path: Path, root: Path, extra_ignore_globs: list[str]) -> bool:
+    rel = normalize_path(str(path.relative_to(root)))
+    parts = set(rel.split('/'))
+    if parts & IGNORE_DIR_NAMES:
+        return True
+    for pattern in extra_ignore_globs:
+        if fnmatch.fnmatch(rel, pattern):
+            return True
+    return False
+
+def iter_candidate_files(root: Path, file_list: Path | None, extra_ignore_globs: list[str]) -> list[Path]:
+    candidates: list[Path] = []
+    seen: set[Path] = set()
+    if file_list is not None:
+        for raw in file_list.read_text(encoding='utf-8').splitlines():
+            item = raw.strip().lstrip('\ufeff')
+            if not item:
+                continue
+            path = (root / item).resolve() if not Path(item).is_absolute() else Path(item)
+            try:
+                rel_to_root = path.resolve().relative_to(root.resolve())
+            except Exception:
+                continue
+            full = root / rel_to_root
+            if full in seen or not is_supported_source(full) or should_skip_file(full, root, extra_ignore_globs):
+                continue
+            seen.add(full)
+            candidates.append(full)
+        return candidates
+    for path in root.rglob('*'):
+        if path in seen or not is_supported_source(path):
+            continue
+        if should_skip_file(path, root, extra_ignore_globs):
+            continue
+        seen.add(path)
+        candidates.append(path)
+    return candidates
+
+def format_float(value: float) -> str:
+    if math.isclose(value, round(value)):
+        return str(int(round(value)))
+    return f'{value:g}'
+
+def nearest_font_token(value: float, tokens: list[FontSizeToken]) -> FontSizeToken | None:
+    if not tokens:
+        return None
+    return min(tokens, key=lambda token: abs(token.value_px - value))
+
+def analyze_file(path: Path, root: Path, color_tokens: list[ColorToken], font_tokens: list[FontSizeToken], autofix: bool) -> tuple[list[Violation], int]:
+    try:
+        original = path.read_text(encoding='utf-8')
+    except UnicodeDecodeError:
+        original = path.read_text(encoding='utf-8', errors='ignore')
+    rel = normalize_path(str(path.relative_to(root)))
+    ext = path.suffix.lower()
+    is_css_like = ext in {'.css', '.scss', '.sass', '.less'}
+    is_dart = ext == '.dart'
+    color_lookup = {token.hex_value: token for token in color_tokens}
+    font_values = {token.value_px for token in font_tokens}
+    violations: list[Violation] = []
+    autofixed_count = 0
+    content = original
+    if is_css_like:
+
+        def replace_hex(match: re.Match[str]) -> str:
+            nonlocal autofixed_count
+            literal = match.group(0)
+            offset = match.start()
+            line, col = line_col_from_offset(content, offset)
+            normalized = normalize_hex(literal)
+            token = color_lookup.get(normalized)
+            suggestion = token.css_replacement if token and token.css_replacement else None
+            if autofix and suggestion:
+                autofixed_count += 1
+                return suggestion
+            violations.append(Violation(path=rel, line=line, col=col, code='TOKEN_COLOR_LITERAL', message=f'Raw color literal `{literal}` is not allowed in production UI code.', suggestion=f'Use token `{suggestion}`.' if suggestion else None))
+            return literal
+        content = HEX_LITERAL_RE.sub(replace_hex, content)
+    else:
+        for match in HEX_LITERAL_RE.finditer(content):
+            literal = match.group(0)
+            line, col = line_col_from_offset(content, match.start())
+            normalized = normalize_hex(literal)
+            token = color_lookup.get(normalized)
+            suggestion = None
+            if token:
+                suggestion = token.dart_replacement if is_dart and token.dart_replacement else token.css_replacement
+            violations.append(Violation(path=rel, line=line, col=col, code='TOKEN_COLOR_LITERAL', message=f'Raw color literal `{literal}` is not allowed in production UI code.', suggestion=f'Use token `{suggestion}`.' if suggestion else None))
+    if is_dart:
+        for match in DART_COLOR_RE.finditer(content):
+            literal = '0x' + match.group(1)
+            line, col = line_col_from_offset(content, match.start())
+            normalized = normalize_hex(literal)
+            token = color_lookup.get(normalized)
+            suggestion = token.dart_replacement if token and token.dart_replacement else None
+            violations.append(Violation(path=rel, line=line, col=col, code='TOKEN_DART_COLOR_LITERAL', message=f'Raw Flutter color literal `{literal}` is not allowed in production UI code.', suggestion=f'Use token `{suggestion}`.' if suggestion else None))
+    for match in CSS_FONT_SIZE_RE.finditer(content):
+        raw_value = float(match.group(2))
+        if raw_value in font_values:
+            continue
+        line, col = line_col_from_offset(content, match.start(2))
+        nearest = nearest_font_token(raw_value, font_tokens)
+        suggestion = None
+        if nearest:
+            if nearest.css_replacement:
+                suggestion = f'Use `{nearest.css_replacement}` ({format_float(nearest.value_px)}px token).'
+            else:
+                suggestion = f'Nearest allowed size: {format_float(nearest.value_px)}px (`{nearest.token_id}`).'
+        violations.append(Violation(path=rel, line=line, col=col, code='TOKEN_FONT_SIZE_OFF_SCALE', message=f'Font size `{format_float(raw_value)}px` is not in locked token scale.', suggestion=suggestion))
+    if is_dart:
+        for match in DART_FONT_SIZE_RE.finditer(content):
+            raw_value = float(match.group(2))
+            if raw_value in font_values:
+                continue
+            line, col = line_col_from_offset(content, match.start(2))
+            nearest = nearest_font_token(raw_value, font_tokens)
+            suggestion = None
+            if nearest:
+                if nearest.dart_replacement:
+                    suggestion = f'Use `{nearest.dart_replacement}` ({format_float(nearest.value_px)}px token).'
+                else:
+                    suggestion = f'Nearest allowed size: {format_float(nearest.value_px)}px (`{nearest.token_id}`).'
+            violations.append(Violation(path=rel, line=line, col=col, code='TOKEN_DART_FONT_SIZE_OFF_SCALE', message=f'Flutter `fontSize: {format_float(raw_value)}` is not in locked token scale.', suggestion=suggestion))
+    if autofix and content != original:
+        path.write_text(content, encoding='utf-8')
+    return (violations, autofixed_count)
+
+def main() -> int:
+    args = parse_args()
+    root = Path(args.root).resolve()
+    lockfile = (root / args.lockfile).resolve() if not Path(args.lockfile).is_absolute() else Path(args.lockfile)
+    file_list = None
+    if args.file_list:
+        file_list = (root / args.file_list).resolve() if not Path(args.file_list).is_absolute() else Path(args.file_list)
+    color_tokens, font_tokens, extra_ignore_globs = load_lockfile(lockfile)
+    candidates = iter_candidate_files(root, file_list, extra_ignore_globs)
+    print(f'[INFO] Design token guard scanning {len(candidates)} file(s)')
+    print(f'[INFO] Lockfile: {normalize_path(str(lockfile.relative_to(root)) if lockfile.is_relative_to(root) else str(lockfile))}')
+    all_violations: list[Violation] = []
+    autofixed_total = 0
+    for path in candidates:
+        violations, autofixed_count = analyze_file(path, root, color_tokens, font_tokens, args.autofix)
+        all_violations.extend(violations)
+        autofixed_total += autofixed_count
+    if args.autofix and autofixed_total:
+        print(f'[FIXED] Applied {autofixed_total} CSS token autofix replacement(s).')
+    if all_violations:
+        for item in all_violations:
+            loc = f'{item.path}:{item.line}:{item.col}'
+            print(f'[ERROR] {loc} [{item.code}] {item.message}')
+            if item.suggestion:
+                print(f'        {item.suggestion}')
+        print(f'[ERROR] Design token guard failed with {len(all_violations)} violation(s).')
+        return 1
+    print('[OK] Design token guard passed.')
+    return 0
+if __name__ == '__main__':
+    sys.exit(main())
+--- END SEMANTIC FILE: .\scripts\design_token_guard.py ---
+
+--- START SEMANTIC FILE: .\scripts\enforce_exclusion_zones.ps1 ---
+param(
+    [string]$RootDir = ".",
+    [int]$SpikeStaleHours = 48,
+    [switch]$FailOnStaleSpike
+)
+
+function Get-RelativeDisplayPath {
+    param(
+        [Parameter(Mandatory = $true)][string]$BasePath,
+        [Parameter(Mandatory = $true)][string]$TargetPath
+    )
+
+    $base = $BasePath.TrimEnd('\', '/')
+    if ($TargetPath.ToLowerInvariant().StartsWith($base.ToLowerInvariant())) {
+        return $TargetPath.Substring($base.Length).TrimStart('\', '/').Replace('\', '/')
+    }
+
+    return $TargetPath.Replace('\', '/')
+}
+
+$resolvedRoot = Resolve-Path -LiteralPath $RootDir -ErrorAction SilentlyContinue
+if (-not $resolvedRoot) {
+    Write-Error "Root directory '$RootDir' was not found."
+    exit 2
+}
+
+if (-not $PSBoundParameters.ContainsKey('SpikeStaleHours') -and $env:CARIS_SPIKE_STALE_HOURS) {
+    $parsedHours = 0
+    if ([int]::TryParse($env:CARIS_SPIKE_STALE_HOURS, [ref]$parsedHours) -and $parsedHours -gt 0) {
+        $SpikeStaleHours = $parsedHours
+    }
+}
+
+$rg = Get-Command rg -ErrorAction SilentlyContinue
+if (-not $rg) {
+    Write-Error "ripgrep (rg) is required for exclusion checks."
+    exit 2
+}
+
+$pattern = 'legacy_api_folder|deprecated_utils'
+
+$args = @(
+    '--line-number',
+    '--with-filename',
+    '--color', 'never',
+    '--glob', '*.dart',
+    '--glob', '*.js',
+    '--glob', '*.jsx',
+    '--glob', '*.ts',
+    '--glob', '*.tsx',
+    '--glob', '*.py',
+    '--glob', '*.go',
+    '--glob', '*.rs',
+    '--glob', '*.java',
+    '--glob', '*.kt',
+    '--glob', '*.swift',
+    '--glob', '*.yml',
+    '--glob', '*.yaml',
+    '--glob', '!**/node_modules/**',
+    '--glob', '!**/.git/**',
+    '--glob', '!**/dist/**',
+    '--glob', '!**/build/**',
+    '--glob', '!**/.next/**',
+    '--glob', '!**/coverage/**',
+    '--glob', '!**/templates/guardrails/**',
+    '--glob', '!**/experimental/**',
+    '--glob', '!experimental/**',
+    '--glob', '!**/*.proto.*',
+    '--glob', '!**/*.md',
+    '-e', $pattern,
+    $resolvedRoot.Path
+)
+
+$results = & rg @args
+$scanExitCode = $LASTEXITCODE
+if ($scanExitCode -gt 1) {
+    Write-Error "Exclusion scan failed with exit code $scanExitCode."
+    exit $scanExitCode
+}
+
+$rootPath = $resolvedRoot.Path.TrimEnd('\', '/')
+$now = Get-Date
+$staleSpikeArtifacts = @()
+$allFiles = Get-ChildItem -Path $rootPath -Recurse -File -Force -ErrorAction SilentlyContinue
+
+foreach ($file in $allFiles) {
+    $full = $file.FullName
+    if (
+        $full -match '[\\/]\.git([\\/]|$)' -or
+        $full -match '[\\/]node_modules([\\/]|$)' -or
+        $full -match '[\\/]dist([\\/]|$)' -or
+        $full -match '[\\/]build([\\/]|$)' -or
+        $full -match '[\\/]\.next([\\/]|$)' -or
+        $full -match '[\\/]coverage([\\/]|$)' -or
+        $full -match '[\\/]templates[\\/]guardrails([\\/]|$)'
+    ) {
+        continue
+    }
+
+    $isExperimental = $full -match '(^|[\\/])experimental([\\/]|$)'
+    $isProto = $file.Name -match '\.proto\.[^\\/\.]+$'
+    if (-not ($isExperimental -or $isProto)) {
+        continue
+    }
+
+    $ageHours = ($now - $file.LastWriteTime).TotalHours
+    if ($ageHours -lt $SpikeStaleHours) {
+        continue
+    }
+
+    $staleSpikeArtifacts += [PSCustomObject]@{
+        Path = Get-RelativeDisplayPath -BasePath $rootPath -TargetPath $full
+        AgeHours = [int][Math]::Floor($ageHours)
+        LastWriteTime = $file.LastWriteTime
+    }
+}
+
+$hasViolation = ($scanExitCode -eq 0 -and $results)
+if ($hasViolation) {
+    Write-Error "Exclusion zone violation detected. Remove deprecated imports/references before commit or merge."
+    $results | ForEach-Object { Write-Host $_ }
+}
+
+$failOnStale = $FailOnStaleSpike.IsPresent -or ($env:CARIS_FAIL_ON_STALE_SPIKES -eq '1')
+if ($staleSpikeArtifacts.Count -gt 0) {
+    Write-Warning "Spike Protocol staleness detected ($($staleSpikeArtifacts.Count) file(s) older than $SpikeStaleHours hours)."
+    Write-Host "[WARN] Spike artifacts are temporary. Refactor or delete stale prototypes before they become shadow code."
+    Write-Host "[WARN] Suggested next step: extract core logic, write failing tests, migrate to production path, then delete spike."
+
+    foreach ($artifact in ($staleSpikeArtifacts | Sort-Object AgeHours -Descending)) {
+        Write-Host ("[WARN] {0} (age: {1}h, last touch: {2})" -f $artifact.Path, $artifact.AgeHours, $artifact.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"))
+    }
+}
+
+if ($hasViolation) {
+    exit 1
+}
+
+if ($staleSpikeArtifacts.Count -gt 0 -and $failOnStale) {
+    Write-Error "Stale Spike Protocol artifacts found and fail mode is enabled (CARIS_FAIL_ON_STALE_SPIKES=1 or -FailOnStaleSpike)."
+    exit 1
+}
+
+Write-Host '[OK] No exclusion zone violations detected.'
+if ($staleSpikeArtifacts.Count -eq 0) {
+    Write-Host ("[OK] No stale Spike Protocol artifacts older than {0} hours detected." -f $SpikeStaleHours)
+}
+exit 0
+
+--- END SEMANTIC FILE: .\scripts\enforce_exclusion_zones.ps1 ---
+
+--- START SEMANTIC FILE: .\scripts\enforce_exclusion_zones.sh ---
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="${1:-.}"
+SPIKE_STALE_HOURS="${CARIS_SPIKE_STALE_HOURS:-48}"
+FAIL_ON_STALE_SPIKES="${CARIS_FAIL_ON_STALE_SPIKES:-0}"
+
+if ! command -v rg >/dev/null 2>&1; then
+  echo "[ERROR] ripgrep (rg) is required for exclusion checks."
+  exit 2
+fi
+
+if [ ! -d "$ROOT_DIR" ]; then
+  echo "[ERROR] Root directory '$ROOT_DIR' was not found."
+  exit 2
+fi
+
+BANNED_REGEX='legacy_api_folder|deprecated_utils'
+
+mapfile -t matches < <(
+  rg \
+    --line-number \
+    --with-filename \
+    --color never \
+    --glob '*.dart' \
+    --glob '*.js' \
+    --glob '*.jsx' \
+    --glob '*.ts' \
+    --glob '*.tsx' \
+    --glob '*.py' \
+    --glob '*.go' \
+    --glob '*.rs' \
+    --glob '*.java' \
+    --glob '*.kt' \
+    --glob '*.swift' \
+    --glob '*.yml' \
+    --glob '*.yaml' \
+    --glob '!**/node_modules/**' \
+    --glob '!**/.git/**' \
+    --glob '!**/dist/**' \
+    --glob '!**/build/**' \
+    --glob '!**/.next/**' \
+    --glob '!**/coverage/**' \
+    --glob '!**/templates/guardrails/**' \
+    --glob '!**/experimental/**' \
+    --glob '!experimental/**' \
+    --glob '!**/*.proto.*' \
+    --glob '!**/*.md' \
+    -e "$BANNED_REGEX" \
+    "$ROOT_DIR" || true
+)
+
+get_mtime_epoch() {
+  local file="$1"
+  if stat -c %Y "$file" >/dev/null 2>&1; then
+    stat -c %Y "$file"
+  else
+    stat -f %m "$file"
+  fi
+}
+
+now_epoch="$(date +%s)"
+stale_found=0
+stale_lines=()
+
+while IFS= read -r spike_file; do
+  [ -z "$spike_file" ] && continue
+  mtime_epoch="$(get_mtime_epoch "$spike_file")"
+  age_hours="$(( (now_epoch - mtime_epoch) / 3600 ))"
+  if [ "$age_hours" -lt "$SPIKE_STALE_HOURS" ]; then
+    continue
+  fi
+  stale_found=1
+  stale_lines+=("[WARN] ${spike_file#./} (age: ${age_hours}h)")
+done < <(
+  find "$ROOT_DIR" \
+    \( -path '*/.git/*' -o -path '*/node_modules/*' -o -path '*/dist/*' -o -path '*/build/*' -o -path '*/.next/*' -o -path '*/coverage/*' -o -path '*/templates/guardrails/*' \) -prune -o \
+    -type f \( -path '*/experimental/*' -o -name '*.proto.*' \) -print
+)
+
+if [ "${#matches[@]}" -gt 0 ]; then
+  echo "[ERROR] Exclusion zone violation detected."
+  echo "[ERROR] Remove deprecated imports/references before commit or merge."
+  printf '%s\n' "${matches[@]}"
+  if [ "$stale_found" -eq 1 ]; then
+    echo "[WARN] Spike Protocol staleness detected (older than ${SPIKE_STALE_HOURS}h):"
+    printf '%s\n' "${stale_lines[@]}"
+  fi
+  exit 1
+fi
+
+if [ "$stale_found" -eq 1 ]; then
+  echo "[WARN] Spike Protocol staleness detected (older than ${SPIKE_STALE_HOURS}h)."
+  echo "[WARN] Refactor or delete stale prototypes before they become shadow code."
+  echo "[WARN] Suggested next step: extract core logic, write failing tests, migrate to production path, then delete spike."
+  printf '%s\n' "${stale_lines[@]}"
+
+  if [ "$FAIL_ON_STALE_SPIKES" = "1" ]; then
+    echo "[ERROR] Stale Spike Protocol artifacts found and fail mode is enabled (CARIS_FAIL_ON_STALE_SPIKES=1)."
+    exit 1
+  fi
+fi
+
+echo "[OK] No exclusion zone violations detected."
+if [ "$stale_found" -eq 0 ]; then
+  echo "[OK] No stale Spike Protocol artifacts older than ${SPIKE_STALE_HOURS} hours detected."
+fi
+
+--- END SEMANTIC FILE: .\scripts\enforce_exclusion_zones.sh ---
+
+--- START SEMANTIC FILE: .\scripts\generate_semantic_bundle.py ---
+# [AST Parse Error: invalid non-printable character U+FEFF (<unknown>, line 1)]
+﻿# Run with: uv run scripts/generate_semantic_bundle.py
+
+import ast
+import os
+import re
+from datetime import datetime
+
+# --- CONFIGURATION ---
+SOURCE_DIR = "."
+OUTPUT_FILE = "SEMANTIC_BUNDLE.txt"
+
+IGNORE_DIRS = {
+    "node_modules",
+    ".git",
+    ".idea",
+    ".vscode",
+    "dist",
+    "build",
+    "bin",
+    "obj",
+    "__pycache__",
+    "env",
+    "venv",
+    "coverage",
+    "target",
+}
+
+ALLOWED_EXTENSIONS = {
+    ".py",
+    ".dart",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".md",
+    ".sh",
+    ".ps1",
+}
+
+
+def is_ignored(path: str) -> bool:
+    parts = path.split(os.sep)
+    return any(ignored in parts for ignored in IGNORE_DIRS)
+
+
+def _is_docstring_expr(node: ast.AST) -> bool:
+    if not isinstance(node, ast.Expr):
+        return False
+
+    value = getattr(node, "value", None)
+    if isinstance(value, ast.Str):
+        return True
+
+    if isinstance(value, ast.Constant) and isinstance(value.value, str):
+        return True
+
+    return False
+
+
+def clean_python_ast(source_code: str) -> str:
+    """Parse Python code into an AST, strip docstrings, and unparse back to text."""
+    try:
+        parsed = ast.parse(source_code)
+        for node in ast.walk(parsed):
+            if not isinstance(node, (ast.Module, ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
+                continue
+
+            body = getattr(node, "body", None)
+            if not body:
+                continue
+
+            if _is_docstring_expr(body[0]):
+                node.body = body[1:]
+
+        return ast.unparse(parsed)
+    except Exception as exc:
+        return f"# [AST Parse Error: {exc}]\n" + source_code
+
+
+def clean_c_style_code(source_code: str) -> str:
+    """Strip block and line comments from Dart/JS/TS-like code."""
+    code = re.sub(r"/\*[\s\S]*?\*/", "", source_code)
+    code = re.sub(r"//.*", "", code)
+    return os.linesep.join(line for line in code.splitlines() if line.strip())
+
+
+def generate_bundle() -> None:
+    print("[INFO] Generating AST-Aware Semantic Bundle...")
+    processed_files = 0
+    bundle_content = []
+
+    for root, dirs, files in os.walk(SOURCE_DIR):
+        dirs[:] = [d for d in dirs if d not in IGNORE_DIRS]
+
+        for file_name in files:
+            ext = os.path.splitext(file_name)[1]
+            if ext not in ALLOWED_EXTENSIONS:
+                continue
+
+            file_path = os.path.join(root, file_name)
+            if is_ignored(file_path):
+                continue
+
+            try:
+                with open(file_path, "r", encoding="utf-8") as handle:
+                    raw_code = handle.read()
+
+                if ext == ".py":
+                    cleaned_code = clean_python_ast(raw_code)
+                elif ext in {".dart", ".js", ".jsx", ".ts", ".tsx"}:
+                    cleaned_code = clean_c_style_code(raw_code)
+                else:
+                    cleaned_code = raw_code
+
+                bundle_content.append(f"\n\n--- START SEMANTIC FILE: {file_path} ---\n")
+                bundle_content.append(cleaned_code)
+                bundle_content.append(f"\n--- END SEMANTIC FILE: {file_path} ---")
+                processed_files += 1
+            except Exception as exc:
+                print(f"[WARN] Skipping {file_path}: {exc}")
+
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    header = f"""/* === CODEX SEMANTIC SNAPSHOT ===
+ * TIMESTAMP: {timestamp}
+ * FILES INCLUDED: {processed_files}
+ * STRICT_MODE: ENABLED
+ * SYSTEM_ROLE: Senior Architect
+ * NOTE: Comments and boilerplate have been programmatically stripped for max density.
+ */"""
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as handle:
+        handle.write(header + "".join(bundle_content))
+
+    print(f"[OK] Semantic Bundle Created: {OUTPUT_FILE} ({processed_files} files parsed)")
+
+
+if __name__ == "__main__":
+    generate_bundle()
+
+--- END SEMANTIC FILE: .\scripts\generate_semantic_bundle.py ---
+
+--- START SEMANTIC FILE: .\test\widget_test.dart ---
+import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:android_app_template/app.dart';
+void main() {
+  testWidgets('Home view renders Caris shell', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const ProviderScope(
+        child: CarisApp(),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Caris Stack'), findsOneWidget);
+    expect(find.text('Unforgettable Aesthetic'), findsOneWidget);
+  });
+}
+--- END SEMANTIC FILE: .\test\widget_test.dart ---

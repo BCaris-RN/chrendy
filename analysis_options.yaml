@@ -1,0 +1,23 @@
+﻿analyzer:
+  plugins:
+    - custom_lint
+
+custom_lint:
+  rules:
+    - ban_legacy_imports:
+        banned_paths:
+          - "legacy_api_folder"
+          - "deprecated_utils"
+        message: "VIOLATION: DEPENDENCY ON DEPRECATED [SOURCE_NAME]."
+    - enforce_design_tokens:
+        lockfile: "templates/guardrails/design_tokens.lock.json"
+        severity: error
+        fatal: true
+        flutter:
+          ban_raw_color_literals: true
+          allowed_font_sizes_px: [12, 16, 32, 64]
+          off_scale_font_size_message: "VIOLATION: FONT SIZE MUST MATCH LOCKED TOKEN SCALE."
+
+linter:
+  rules:
+    - avoid_print

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "semanticRiskRules": [
+    {
+      "id": "payments_billing",
+      "pattern": "\\b(payment|billing|invoice|refund|charge|checkout)\\b"
+    },
+    {
+      "id": "auth_credentials",
+      "pattern": "\\b(auth|oauth|login|password|credential|jwt|bearer|access[_-]?token|refresh[_-]?token|api[_-]?key|secret)\\b"
+    },
+    {
+      "id": "encryption_crypto",
+      "pattern": "\\b(encrypt(?:ion|ed)?|decrypt(?:ion|ed)?|encryption)\\b"
+    }
+  ]
+}

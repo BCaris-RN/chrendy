@@ -1,0 +1,75 @@
+﻿pre-commit:
+  parallel: true
+  commands:
+    exclusion-zones:
+      run: |
+        if command -v pwsh >/dev/null 2>&1; then
+          pwsh -NoProfile -File scripts/enforce_exclusion_zones.ps1
+        elif command -v powershell >/dev/null 2>&1; then
+          powershell -NoProfile -ExecutionPolicy Bypass -File scripts/enforce_exclusion_zones.ps1
+        else
+          bash scripts/enforce_exclusion_zones.sh
+        fi
+
+    proto-stabilization-gate:
+      run: |
+        staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+        if [ -z "$staged" ]; then
+          echo "[OK] No staged files to check for spike artifacts."
+          exit 0
+        fi
+
+        if printf '%s\n' "$staged" | grep -E '(^|/)experimental/|\.proto\.[^/]+$' >/dev/null 2>&1; then
+          echo "[ERROR] Spike Protocol artifacts detected in staged files."
+          echo "[ERROR] Refactor prototype code into src/ (or equivalent production paths) and add tests before commit."
+          printf '%s\n' "$staged" | grep -E '(^|/)experimental/|\.proto\.[^/]+$' || true
+          exit 1
+        fi
+
+        echo "[OK] No staged Spike Protocol artifacts detected."
+
+    semantic-bundle-check:
+      run: |
+        if [ -f scripts/generate_semantic_bundle.py ]; then
+          if command -v uv >/dev/null 2>&1; then
+            uv run scripts/generate_semantic_bundle.py > /dev/null
+          elif command -v python >/dev/null 2>&1; then
+            python scripts/generate_semantic_bundle.py > /dev/null
+          else
+            echo "[WARN] uv/python not found; semantic bundle check skipped."
+          fi
+        else
+          echo "[WARN] scripts/generate_semantic_bundle.py not found; semantic bundle check skipped."
+        fi
+
+    design-token-guard:
+      run: |
+        if [ -f scripts/design_token_guard.py ] && [ -f templates/guardrails/design_tokens.lock.json ]; then
+          if command -v uv >/dev/null 2>&1; then
+            uv run scripts/design_token_guard.py --lockfile templates/guardrails/design_tokens.lock.json
+          elif command -v python >/dev/null 2>&1; then
+            python scripts/design_token_guard.py --lockfile templates/guardrails/design_tokens.lock.json
+          else
+            echo "[WARN] uv/python not found; design token guard skipped."
+          fi
+        else
+          echo "[WARN] design token guard script/lockfile not found; check skipped."
+        fi
+
+    flutter-custom-lint:
+      glob: "*.dart"
+      run: |
+        if [ -f pubspec.yaml ]; then
+          flutter analyze
+        else
+          echo "[SKIP] pubspec.yaml not found; skipping Flutter lint."
+        fi
+
+    eslint:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: |
+        if [ -f package.json ]; then
+          npx eslint . --max-warnings=0
+        else
+          echo "[SKIP] package.json not found; skipping ESLint."
+        fi

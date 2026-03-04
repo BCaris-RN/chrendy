@@ -1,0 +1,12 @@
+Starting The Phoenix Engine: Caris Stack...
+Phoenix Protocol initiated.
+Checking system integrity...
+Created .codedrop folder for logs/backups.
+Python runtime found: Python 3.13.5
+Optional configuration missing: backend\config\.env
+Action: create .env only if your selected automation scripts require environment variables.
+Missing requirements.txt. Python execution may fail if libs are missing.
+Evaluating complexity and semantic risk gate...
+[INFO] No supported source files changed. Complexity score = 0 (Fast Model route).
+[AUDIT ROUTE] Self-Certify (low complexity, no high-risk paths).
+Pre-Flight Audit completed successfully.

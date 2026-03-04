@@ -1,0 +1,163 @@
+﻿name: Caris Hard Gates
+
+on:
+  pull_request:
+    branches: [main, master]
+  push:
+    branches: [main, master]
+
+jobs:
+  exclusion-gate:
+    name: Exclusion Zone Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Enforce exclusion zones
+        env:
+          CARIS_SPIKE_STALE_HOURS: "48"
+          CARIS_FAIL_ON_STALE_SPIKES: "1"
+        run: bash scripts/enforce_exclusion_zones.sh
+
+      - name: Enforce Spike Protocol stabilization gate
+        run: |
+          if git ls-files | grep -E '(^|/)experimental/|\.proto\.[^/]+$' >/dev/null 2>&1; then
+            echo "[ERROR] Spike Protocol artifacts detected in tracked files."
+            echo "[ERROR] Refactor prototype code into production paths and add tests before merge."
+            git ls-files | grep -E '(^|/)experimental/|\.proto\.[^/]+$' || true
+            exit 1
+          fi
+          echo "[OK] No Spike Protocol artifacts detected."
+
+  complexity-routing:
+    name: Complexity Routing Gate
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install complexity tooling
+        run: python -m pip install --upgrade pip lizard
+
+      - name: Collect changed files
+        run: |
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" > changed_files.txt
+          echo "Changed files:"
+          cat changed_files.txt || true
+
+      - name: Route by cyclomatic complexity
+        run: |
+          python scripts/complexity_gate.py \
+            --file-list changed_files.txt \
+            --low 5 \
+            --high 20 \
+            --semantic-risk-config templates/guardrails/semantic_risk_keywords.json
+
+  design-token-guard:
+    name: Design Token Guard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Determine design token scan scope
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" > changed_files.txt
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            BEFORE_SHA="${{ github.event.before }}"
+            if [ -z "${BEFORE_SHA}" ] || [ "${BEFORE_SHA}" = "0000000000000000000000000000000000000000" ]; then
+              git ls-files > changed_files.txt
+            else
+              git diff --name-only "${BEFORE_SHA}" "${{ github.sha }}" > changed_files.txt
+            fi
+          else
+            git ls-files > changed_files.txt
+          fi
+
+          echo "Changed files for token guard:"
+          cat changed_files.txt || true
+
+          TOKEN_INFRA_OR_THEME_CORE_CHANGED=0
+          if grep -E '^(templates/guardrails/design_tokens\.lock\.json|scripts/design_token_guard\.py|templates/guardrails/analysis_options\.caris\.yaml)$' changed_files.txt >/dev/null 2>&1; then
+            TOKEN_INFRA_OR_THEME_CORE_CHANGED=1
+          fi
+          if grep -E '(^|/)(theme|themes|tokens)(/|\.|_)' changed_files.txt >/dev/null 2>&1; then
+            TOKEN_INFRA_OR_THEME_CORE_CHANGED=1
+          fi
+          if grep -E '(^|/)(app_theme|theme_data|design_tokens?)\.(dart|ts|tsx|js|jsx|css|scss|sass|less)$' changed_files.txt >/dev/null 2>&1; then
+            TOKEN_INFRA_OR_THEME_CORE_CHANGED=1
+          fi
+
+          if [ "${TOKEN_INFRA_OR_THEME_CORE_CHANGED}" = "1" ]; then
+            echo "TOKEN_GUARD_SCOPE=full" >> "$GITHUB_ENV"
+            echo "[INFO] Token infrastructure/theme-core change detected. Running full design token scan."
+            exit 0
+          fi
+
+          grep -E '\.(css|scss|sass|less|dart|js|jsx|ts|tsx)$' changed_files.txt > token_guard_changed_files.txt || true
+          echo "TOKEN_GUARD_SCOPE=incremental" >> "$GITHUB_ENV"
+          echo "TOKEN_GUARD_FILE_LIST=token_guard_changed_files.txt" >> "$GITHUB_ENV"
+
+          echo "[INFO] Running incremental design token scan (changed UI files only)."
+          cat token_guard_changed_files.txt || true
+
+      - name: Enforce locked design tokens (Incremental or Full)
+        shell: bash
+        run: |
+          if [ "${TOKEN_GUARD_SCOPE:-full}" = "incremental" ]; then
+            python scripts/design_token_guard.py \
+              --lockfile templates/guardrails/design_tokens.lock.json \
+              --file-list "${TOKEN_GUARD_FILE_LIST}"
+          else
+            python scripts/design_token_guard.py \
+              --lockfile templates/guardrails/design_tokens.lock.json
+          fi
+
+  codeql:
+    name: CodeQL Security Analysis
+    needs: exclusion-gate
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript-typescript', 'python']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
